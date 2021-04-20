@@ -1,0 +1,147 @@
+/* GLOBAL STYLES */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+input {
+  margin-left: 1rem;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 5px;
+  border-style: none;
+  border: 2px solid black;
+}
+
+/* HEADER SECTION STYLES */
+header {
+  padding: 1rem;
+  background-color: rgb(31, 31, 31);
+}
+
+header h1 {
+  color: white;
+  letter-spacing: 3px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* SERIES START AND END DATE SECTION STYLES */
+
+.series {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 4px solid black;
+}
+
+.series-start,
+.series-end {
+  flex: 1;
+  background-color: lightgray;
+  padding: 1rem;
+  text-align: center;
+}
+
+.series-start {
+  border-right: 2px solid black;
+}
+
+.series-end {
+  border-left: 2px solid black;
+}
+
+.series-start-div-1,
+.series-end-div-1 {
+  margin-bottom: 1rem;
+}
+
+/* DATA INPUT SECTION STYLES */
+
+.data-input {
+  display: flex;
+  flex-direction: row;
+  /* background-color: lightgray; */
+  border-bottom: 4px solid black;
+}
+
+.data-input-start,
+.data-input-end {
+  flex: 1;
+  text-align: center;
+  /* border-right: 4px solid black; */
+  padding: 1rem;
+}
+
+.add-entry {
+  flex: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-entry-button {
+  color: white;
+  background-color: black;
+  border: none;
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.add-entry-button:hover {
+  color: black;
+  background-color: white;
+}
+
+/* DISPLAY SECTION STYLES */
+
+.display-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.display-sub-container {
+  display: flex;
+  flex-direction: row;
+  justify-items: space-between;
+}
+
+.display-container-heading,
+.display-container-delete-button {
+  flex: 1;
+}
+
+.display-container-delete-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-all-button {
+  color: white;
+  background-color: black;
+  border: none;
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.delete-all-button:hover {
+  color: black;
+  background-color: rgb(250, 119, 119);
+}
+
+.data-instance {
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 10px;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIPS Data Entry System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
+
+    <!-- Custom Style Sheets -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Custom Scripts -->
+    <script src = "script.js"></script>
+</head>
+<body>
+    <!-- HEADER SECTION -->
+    <header>
+        <h1>FIPS Data Entry System</h1>
+    </header>
+
+    <!-- SERIES START AND END DATE AND TIME SECTION -->
+    <div class = "series">
+        <!-- Series Start -->
+        <div class = "series-start">
+            <div class = "series-start-div-1">
+                <label for="series-start-date">Series start date:</label>
+                <input type="date" name = "series-start-date" id = "series-start-date" required>
+            </div>
+            <div class = "series-start-div-2">
+                <label for="series-start-time">Series start time:</label>
+                <input type="time" name = "series-start-time" id = "series-start-time" required>
+            </div>
+        </div>
+        <!-- Series End -->
+        <div class = "series-end">
+            <div class = "series-end-div-1">
+                <label for="series-end-date">Series end date:</label>
+                <input type="date" name = "series-end-date" id = "series-end-date" required>
+            </div>
+            <div class = "series-end-div-2">
+                <label for="series-end-time">Series end time:</label>
+                <input type="time" name = "series-end-time" id = "series-end-time" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLEEP DATA ENTRY SECTION -->
+    <div class="data-input">
+        <div class = "data-input-start">
+            <label for="sleep-start-date">Sleep start date:</label>
+            <input type="date" name = "sleep-start-date" id = "sleep-start-date" required>
+            <br>
+            <br>
+            <label for="sleep-start-time">Sleep start time:</label>
+            <input type="time" name = "sleep-start-time" id = "sleep-start-time" required>
+        </div>
+        <div class = "data-input-end">
+            <label for="sleep-end-date">Sleep end date:</label>
+            <input type="date" name = "sleep-end-date" id = "sleep-end-date" required>
+            <br>
+            <br>
+            <label for="sleep-end-time">Sleep end time:</label>
+            <input type="time" name = "sleep-end-time" id = "sleep-end-time" required>
+        </div>
+        <div class="add-entry">
+            <button class = "add-entry-button" onclick = "addEntry()">
+                Add Entry
+            </button>
+        </div>
+    </div>
+
+    <!-- DISPLAY OF DATA SECTION -->
+    <div class = "display-container">
+        <div class = "display-sub-container">
+            <div class="display-container-heading">
+                <h1>Data Entries</h1>
+            </div>
+            <div class="display-container-delete-button">
+                <button class = "delete-all-button" onclick = "deleteAll()">Delete All Entries
+                </button>
+            </div>
+        </div>
+        <div class = "display">
+            <!-- Here the data instances will be inserted -->
+            Looks like you haven't added your sleep data yet !
+        </div>
+    </div>
+</body>
+</html>
