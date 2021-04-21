@@ -105,6 +105,7 @@ header h1 {
   width: 80%;
   margin: auto;
   margin-top: 1rem;
+  text-align: center;
 }
 
 .display-sub-container {
@@ -144,4 +145,37 @@ header h1 {
   margin: 10px auto;
   padding: 10px;
   border-radius: 10px;
+  /* width: 50%; */
+  /* text-align: justify; */
+  /* This display property adjusts the width of each data instance to the width of the content */
+  /* the <br> in the html code added to the final display string makes each data-instance element to go into a different line */
+  display: inline-block;
+}
+
+.delete-entry-button {
+  color: white;
+  background-color: black;
+  border: none;
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+  margin-left: 5rem;
+}
+
+.delete-entry-button {
+  color: white;
+  background-color: black;
+  border: none;
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 0.25rem 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.delete-entry-button:hover {
+  color: black;
+  background-color: rgb(250, 119, 119);
 }
