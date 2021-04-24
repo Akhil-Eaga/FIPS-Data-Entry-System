@@ -1,21 +1,12 @@
-// ----- LIST OF FEATURES TO IMPLEMENT -----
-// 1) Prepopulate the values in the date and time 
-// 2) Add ability to update a specific entry
-// 3) Add ability to download the data as CSV
-// 4) Add duplicate checking to avoid fat finger errors
-// 4.1) Alert users on overlappping sleep durations
-// 5) Check for start times that are later than the end times 
-// 6) Add data validation to the series start and series end dates and times
-// 7) Sort the data instances according to the start date and then display them
-
-
-
+// ---------- GLOBAL VARIABLES DECLARATION ----------
 // global array to store the data entry elements
 var data = [];
 
 // used to temporarily store the data of one sleep cycle entry
-var tempData = []
+var tempData = [];
 
+// this code block runs when the webpage window loads in the browser
+// acts kind of starting point for the program execution
 window.onload = function () {
 
     if (localStorage.getItem("sleepdata") == null) {
@@ -27,6 +18,7 @@ window.onload = function () {
     }
 }
 
+// displays the sleep data on to the webpage
 function displaySleepData() {
     // var tempArray = JSON.parse(localStorage.getItem("sleepdata"));
     // display the tempArray in the div
@@ -47,9 +39,7 @@ function displaySleepData() {
     }
 }
 
-// adds data entry to the data array
-// NEEDS TO CALL A SORTING FUNCTION AFTER INSERTING THE DATA AND THEN CALL THE DISPLAY FUNCTION
-// PREPOPULATE THE VALUES IN THE DATE TIME FIELDS AFTER ADDING ONE ENTRY
+// adds sleep data instane to the front end and localStorage
 function addEntry() {
     // resetting the temporary data array
     tempData = [];
@@ -60,42 +50,66 @@ function addEntry() {
     var sleepEndDate = document.querySelector("#sleep-end-date").value;
     var sleepEndTime = document.querySelector("#sleep-end-time").value;
 
-    // basic data validation
-    if (sleepStartDate == "" || sleepStartTime == "" || sleepEndDate == "" || sleepEndTime == "") {
-        alert("Please enter sleep data to add an entry");
+    // collecting the data input values into a temp array
+    tempData = [sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime];
+
+    // basic data validation to check if any input is missing
+    if(tempData.includes("")){
+        alert("Please enter dates and times of sleep start and end");
+    }
+    else if (isDuplicateEntry()){
+        alert("Sleep data already present.\nPlease update your sleep data to make an new entry");
     }
     else {
-        // collecting the data input values into a temp array
-        tempData.push(sleepStartDate);
-        tempData.push(sleepStartTime);
-        tempData.push(sleepEndDate);
-        tempData.push(sleepEndTime);
         // pushing the temp data into main data
         data.push(tempData);
 
         // data array is sorted in chronological order 
         data.sort();
 
-        // this reverses the order of values to reverse chronological order
-        // data.reverse();
-
         // pushing the main data into local storage
         localStorage.setItem("sleepdata", JSON.stringify(data));
-        // render the entire data again
-        // entire data is being rendered because later on sorting will be done
+        
+        // rendering the updated data
         displaySleepData();
+
+        // displaying toast message to inform the user
+        toastMessage("+ Added", "positive");
     }
 }
 
-// deletes all the data entries in the program storage (i.e., the data array) and also in the browser localStorage including the temp array in the program storage
+function isDuplicateEntry(){
+    var strTempData = tempData.join(",");
+    console.log(strTempData);
+    for(var index = 0; index < data.length; index++){
+        if(strTempData == data[index].join(",")){
+            return true;
+        }
+    }
+    return false;
+}
+
+// deletes all the data entries from both front-end and back-end
 function deleteAllEntries() {
+    if(data.length == 0){
+        alert("No entries to delete");
+        return;
+    }
+
+    if(!confirm("Click OK to delete all.\nOtherwise click Cancel.")){
+        return;
+    }
+
     data = [];
     tempData = [];
     localStorage.setItem("sleepdata", JSON.stringify(data));
     displaySleepData();
+
+    // displaying a toast message to inform the user
+    toastMessage("- Deleted all entries", "negative");
 }
 
-
+// deletes a specific entry upon clicking delete button of the sleep data instance
 function deleteEntry(event) {
     var buttonElement = event.target; // gives the button element
     var dataElement = buttonElement.parentElement; // gets the parent, which is the data entry itself
@@ -107,4 +121,82 @@ function deleteEntry(event) {
 
     displaySleepData();
 
+    // displaying a toast message to inform the user
+    toastMessage("- Deleted", "negative");
+}
+
+// this function displays a toast message with the message string colored according to the emotion of the message
+function toastMessage(messageString, emotion = "neutral"){
+    var color;
+    var backgroundColor;
+
+    if(emotion == "positive"){
+        color = "green";
+        backgroundColor = "lightgreen";
+    }
+    else if (emotion == "negative"){
+        color = "red";
+        backgroundColor = "rgba(255, 0, 0, 0.3)";
+    }
+    else{
+        // neutral emotion
+        color = "rgb(128, 128, 0)"; // dark yellow
+        backgroundColor = "rgb(255, 255, 111)"; // light yellow
+    }
+
+    var toastMessageElement = document.getElementById("toast-message");
+    toastMessageElement.innerText = messageString;
+    toastMessageElement.style.backgroundColor = backgroundColor;
+    toastMessageElement.style.color = color;
+
+    toastMessageElement.classList.toggle("hidden-message");
+    
+    window.setTimeout(function(){
+        toastMessageElement.classList.toggle("hidden-message");
+    }, 1000);
+}
+
+// exports the sleep data into csv format
+function exportToCSV(){
+    seriesDateTimes = getSeriesDateTimes(); 
+    
+    if(seriesDateTimes.includes("")){
+        alert("Please enter date and time values for series start and end");
+        return;
+    }
+    
+    var seriesStartDateTime = seriesDateTimes[0] + " " + seriesDateTimes[1] + ":00";
+    var seriesEndDateTime = seriesDateTimes[2] + " " + seriesDateTimes[3] + ":00";
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    var columns = ["sleep.start", "sleep.end", "sleep.id","series.start.datetime", "series.stop.datetime"];
+    
+    // adding column names to csvContent
+    csvContent = csvContent + columns.join(",") + "\r\n";
+
+    for(var id = 0; id < data.length; id++){
+        var sleepId = id + 1;
+        data[id][1] += ":00";
+        data[id][3] += ":00";
+        var strSleepInstance = data[id][0] + " " + data[id][1] + "," + data[id][2] + " " + data[id][3] + "," + sleepId + "," + seriesStartDateTime + "," + seriesEndDateTime;
+
+        csvContent = csvContent + strSleepInstance + "\r\n";
+    }
+
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "sleep_data.csv");
+    // document.body.appendChild(link);
+    link.click();
+}
+
+function getSeriesDateTimes(){
+    var seriesStartDate = document.getElementById("series-start-date").value;
+    var seriesStartTime = document.getElementById("series-start-time").value;
+    var seriesEndDate = document.getElementById("series-end-date").value;
+    var seriesEndTime = document.getElementById("series-end-time").value;
+    
+    return [seriesStartDate, seriesStartTime, seriesEndDate, seriesEndTime];
 }

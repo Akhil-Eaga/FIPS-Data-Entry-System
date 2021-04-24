@@ -18,10 +18,11 @@
 
     <!-- Custom Scripts -->
     <script src = "script.js"></script>
+    <noscript>Your browser does not support JavaScript!</noscript>
 </head>
 <body>
     <!-- HEADER SECTION -->
-    <header>
+    <header class = "fips-header">
         <h1>FIPS Data Entry System</h1>
     </header>
 
@@ -48,6 +49,9 @@
                 <label for="series-end-time">Series end time:</label>
                 <input type="time" name = "series-end-time" id = "series-end-time" required>
             </div>
+        </div>
+        <div class="export-button-container">
+            <button id = "export-button" onclick = "exportToCSV()">Export to CSV</button>
         </div>
     </div>
 
@@ -81,6 +85,9 @@
         <div class = "display-sub-container">
             <div class="display-container-heading">
                 <h1>Data Entries</h1>
+            </div>
+            <div class = "toast-message-container">
+                <p id = "toast-message" class = "hidden-message">Placeholder Toast Message</p>
             </div>
             <div class="display-container-delete-button">
                 <button class = "delete-all-button" onclick = "deleteAllEntries()">Delete All Entries
