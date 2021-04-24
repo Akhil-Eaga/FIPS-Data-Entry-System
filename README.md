@@ -11,3 +11,11 @@ Repo for the FIPS system code files
 1) index.html - Contains the HTML code that renders the front end
 2) styles.css - This is CSS file used to add a bit of styling and layout to the front end
 3) script.js - Adds functionality to the front end FIPS system
+
+
+## Features available:
+1) Automatic sorting of the sleep data
+2) Duplicate data entry detection and prevention
+3) Exporting data into a CSV file format
+4) Confirmation before deleting all the data
+5) Data is stored in the browser (so data storage is persistent)
