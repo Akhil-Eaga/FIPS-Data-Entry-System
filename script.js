@@ -1,9 +1,13 @@
 // ---------- GLOBAL VARIABLES DECLARATION ----------
+
 // global array to store the data entry elements
 var data = [];
-
 // used to temporarily store the data of one sleep cycle entry
 var tempData = [];
+// lower threshold for sleep duration (in hrs) below which a warning will be shown to the user (the threshold value is not included)
+const lowerThresholdSleepDuration = 1;
+// upper threshold for sleep duration (in hrs) above which a warning will be shown to the user (the threshold value is not included)
+const upperThresholdSleepDuration = 12;
 
 // this code block runs when the webpage window loads in the browser
 // acts kind of starting point for the program execution
@@ -56,29 +60,40 @@ function addEntry() {
     // basic data validation to check if any input is missing
     if(tempData.includes("")){
         alert("Start and end date and time fields cannot be empty.");
+        return;
     }
-    else if (isDuplicateEntry()){
+    if (isDuplicateEntry()){
         alert("Sleep data already present.\nPlease update your sleep data to make an new entry.");
+        return;
     }
-    else if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)){
+    if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)){
         alert("Start time cannot be after or equal to end time.\nPlease modify the input.");
+        return;
     }
-    else {
-        // pushing the temp data into main data
-        data.push(tempData);
-
-        // data array is sorted in chronological order 
-        data.sort();
-
-        // pushing the main data into local storage
-        localStorage.setItem("sleepdata", JSON.stringify(data));
-        
-        // rendering the updated data
-        displaySleepData();
-
-        // displaying toast message to inform the user
-        toastMessage("+ Added", "positive");
+    if (isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) != 0){
+        const status = isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime);
+        var message = status == 1 ? "Abnormally long duration detected." : "Abnormally short duration detected.";
+        message = message + " Do you wish to add this ?";
+        if(!confirm(message)){
+            return;
+        }
     }
+    
+    // pushing the temp data into main data
+    data.push(tempData);
+
+    // data array is sorted in chronological order 
+    data.sort();
+
+    // pushing the main data into local storage
+    localStorage.setItem("sleepdata", JSON.stringify(data));
+    
+    // rendering the updated data
+    displaySleepData();
+
+    // displaying toast message to inform the user
+    toastMessage("+ Added", "positive");
+    
 }
 
 // returns boolean true if the new instance is a duplicate, else returns false
@@ -263,5 +278,22 @@ function timeInSeconds(date, time){
     var d = new Date(year, month, day, hours, minutes, seconds);
     // since Math.floor returns the time in millseconds, the value is divided by 1000
     return Math.floor(d/1000);
+}
+
+// returns 1 for abnormally long duration, -1 for abnormally short duration and 0 for valid sleep duration
+function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime){
+    var duration = timeInSeconds(sleepEndDate, sleepEndTime) - timeInSeconds(sleepStartDate, sleepStartTime);
+    
+    const lowerThresholdInSeconds = lowerThresholdSleepDuration * 3600;
+    const upperThresholdInSeconds = upperThresholdSleepDuration * 3600;
+    if(duration < lowerThresholdInSeconds){
+        return - 1; // represents abnormally short duration
+    }
+    else if(duration > upperThresholdInSeconds){
+        return 1; // represents abnormally long duration
+    }
+    else {
+        return 0; // represents valid duration
+    }
 }
 
