@@ -20,7 +20,7 @@ Repo for the FIPS system code files
 4) Confirmation before deleting all the data
 5) Data is stored in the browser (so data storage is persistent)
 6) Data validation checks added:
-    a) Series start time cannot be after or equal series end time
-    b) Series start time cannot be after or equal first sleep start time
-    c) Series end cannot be before or equal last sleep end time
-    d) For each sleep instance the start time cannot be after or equal to the end time
+    a) Series start time cannot be after or equal series end time  
+    b) Series start time cannot be after or equal first sleep start time  
+    c) Series end cannot be before or equal last sleep end time  
+    d) For each sleep instance the start time cannot be after or equal to the end time  
