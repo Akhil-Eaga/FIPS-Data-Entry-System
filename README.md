@@ -19,7 +19,7 @@ Repo for the FIPS system code files
 3) Exporting data into a CSV file format
 4) Confirmation before deleting all the data
 5) Data is stored in the browser (so data storage is persistent)
-6) Data validation checks added:
+6) Data validation checks added:  
     a) Series start time cannot be after or equal series end time  
     b) Series start time cannot be after or equal first sleep start time  
     c) Series end cannot be before or equal last sleep end time  
