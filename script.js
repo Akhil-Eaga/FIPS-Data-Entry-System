@@ -55,10 +55,13 @@ function addEntry() {
 
     // basic data validation to check if any input is missing
     if(tempData.includes("")){
-        alert("Please enter dates and times of sleep start and end");
+        alert("Start and end date and time fields cannot be empty.");
     }
     else if (isDuplicateEntry()){
-        alert("Sleep data already present.\nPlease update your sleep data to make an new entry");
+        alert("Sleep data already present.\nPlease update your sleep data to make an new entry.");
+    }
+    else if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)){
+        alert("Start time cannot be after or equal to end time.\nPlease modify the input.");
     }
     else {
         // pushing the temp data into main data
@@ -78,9 +81,9 @@ function addEntry() {
     }
 }
 
+// returns boolean true if the new instance is a duplicate, else returns false
 function isDuplicateEntry(){
     var strTempData = tempData.join(",");
-    console.log(strTempData);
     for(var index = 0; index < data.length; index++){
         if(strTempData == data[index].join(",")){
             return true;
@@ -92,11 +95,11 @@ function isDuplicateEntry(){
 // deletes all the data entries from both front-end and back-end
 function deleteAllEntries() {
     if(data.length == 0){
-        alert("No entries to delete");
+        alert("No entries to delete.");
         return;
     }
 
-    if(!confirm("Click OK to delete all.\nOtherwise click Cancel.")){
+    if(!confirm("Click \"OK\" to delete all. Otherwise click \"Cancel\".")){
         return;
     }
 
@@ -159,12 +162,34 @@ function toastMessage(messageString, emotion = "neutral"){
 // exports the sleep data into csv format
 function exportToCSV(){
     seriesDateTimes = getSeriesDateTimes(); 
+    // seriesDateTimes has the format of [seriesStartDate, seriesStartTime, seriesEndDate, seriesEndTime];
     
+    // checking if any data is present in the store for exporting
+    if(data.length == 0){
+        alert("No data to export.\nPlease add some sleep instances to use this feature");
+        return; // preventing program execution ahead
+    }
+    // checking and preventing empty series date and time fields
     if(seriesDateTimes.includes("")){
         alert("Please enter date and time values for series start and end");
+        return; // preventing program execution ahead
+    }
+    // checking if series start is after series end
+    if(!isEndAfterStart(seriesDateTimes[0], seriesDateTimes[1], seriesDateTimes[2], seriesDateTimes[3])){
+        alert("Series start cannot be after or equal to series end.\nPlease modify the input.");
         return;
     }
-    
+    // checking if series start is before the first sleep start
+    if(!isValidSeriesStart(seriesDateTimes[0], seriesDateTimes[1], data[0][0], data[0][1])){
+        alert("Series start cannot be after or equal to the first sleep start time.\nPlease modify your series start.");
+        return; // preventing export to CSV
+    }
+    // checking if series end is after the last sleep end
+    if(!isValidSeriesEnd(data[data.length - 1][2], data[data.length - 1][3], seriesDateTimes[2], seriesDateTimes[3])){
+        alert("Series end cannot be before or equal to the last sleep end time.\nPlease modify your series end.");
+        return; // preventing export to CSV
+    }
+
     var seriesStartDateTime = seriesDateTimes[0] + " " + seriesDateTimes[1] + ":00";
     var seriesEndDateTime = seriesDateTimes[2] + " " + seriesDateTimes[3] + ":00";
 
@@ -177,9 +202,10 @@ function exportToCSV(){
 
     for(var id = 0; id < data.length; id++){
         var sleepId = id + 1;
-        data[id][1] += ":00";
-        data[id][3] += ":00";
-        var strSleepInstance = data[id][0] + " " + data[id][1] + "," + data[id][2] + " " + data[id][3] + "," + sleepId + "," + seriesStartDateTime + "," + seriesEndDateTime;
+        var modifiedStartTime =  data[id][1] + ":00";
+        var modifiedEndTime =  data[id][3] + ":00";
+        
+        var strSleepInstance = data[id][0] + " " + modifiedStartTime + "," + data[id][2] + " " + modifiedEndTime + "," + sleepId + "," + seriesStartDateTime + "," + seriesEndDateTime;
 
         csvContent = csvContent + strSleepInstance + "\r\n";
     }
@@ -192,6 +218,7 @@ function exportToCSV(){
     link.click();
 }
 
+// extracts the series start and end dates and times
 function getSeriesDateTimes(){
     var seriesStartDate = document.getElementById("series-start-date").value;
     var seriesStartTime = document.getElementById("series-start-time").value;
@@ -200,3 +227,41 @@ function getSeriesDateTimes(){
     
     return [seriesStartDate, seriesStartTime, seriesEndDate, seriesEndTime];
 }
+
+// checks if the end time is after the start time or not
+function isEndAfterStart(startDate, startTime, endDate, endTime){
+    var start = timeInSeconds(startDate, startTime);
+    var end = timeInSeconds(endDate, endTime);
+
+    return end > start;
+}
+
+// checks if the series start is before the first sleep start time
+function isValidSeriesStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime){
+    return isEndAfterStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime);
+}
+
+// checks if the last sleep time is before the series end time
+function isValidSeriesEnd(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime){
+    console.log(lastSleepDate);
+    console.log(lastSleepTime);
+    console.log(seriesEndDate);
+    console.log(seriesEndTime); 
+    return isEndAfterStart(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime);
+}
+
+function timeInSeconds(date, time){
+    var dateInfo = date.split("-");
+    var year = Number.parseInt(dateInfo[0]);
+    var month = Number.parseInt(dateInfo[1]) - 1;
+    var day = Number.parseInt(dateInfo[2]); 
+
+    var timeInfo = time.split(":");
+    var hours = Number.parseInt(timeInfo[0]);
+    var minutes = Number.parseInt(timeInfo[1]);
+    var seconds = 0;
+    var d = new Date(year, month, day, hours, minutes, seconds);
+    // since Math.floor returns the time in millseconds, the value is divided by 1000
+    return Math.floor(d/1000);
+}
+
