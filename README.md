@@ -1,5 +1,7 @@
 # FIPS-Data-Entry-System
-Repo for the FIPS system code files
+Repo for the FIPS system code files  
+
+### Link to access the live version of this data entry system: https://akhil-eaga.github.io/FIPS-Data-Entry-System/
 
 ## Contributors:
 - Luke Strickland - Project Supervisor
