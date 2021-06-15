@@ -34,6 +34,20 @@ header h1 {
   font-size: 2rem;
 }
 
+/* FIREFOX ALERT SECTION STYLES */
+.hide-firefox-alert {
+  display: none;
+  background-color: red;
+  /* padding: 0.5rem; */
+}
+
+.alert-danger {
+  margin: 0.25rem;
+  border: 1px solid #721c24;
+}
+
+
+
 /* SERIES START AND END DATE SECTION STYLES */
 
 .series {
@@ -183,7 +197,7 @@ header h1 {
 
 .delete-all-button:hover {
   color: rgb(31, 31, 31);
-  background-color: rgb(250, 119, 119);
+  background-color: rgb(250, 120, 120);
 }
 
 .data-instance {
@@ -223,5 +237,5 @@ header h1 {
 
 .delete-entry-button:hover {
   color: rgb(31, 31, 31);
-  background-color: rgb(250, 119, 119);
+  background-color: rgb(250, 120, 120);
 }

@@ -1,103 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIPS Data Entry System</title>
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
 
     <!-- Custome Icons from Ionicons -->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Custom Style Sheets -->
     <link rel="stylesheet" href="styles.css">
 
     <!-- Custom Scripts -->
-    <script src = "script.js"></script>
+    <script src="script.js"></script>
     <noscript>Your browser does not support JavaScript!</noscript>
 </head>
+
 <body>
     <!-- HEADER SECTION -->
-    <header class = "fips-header">
+    <header class="fips-header">
         <h1>FIPS Data Entry System</h1>
     </header>
+    <!-- FIREFOX ALERT SECTION -->
+    <div class="hide-firefox-alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            You are using Mozilla Firefox. Date and time inputs may not work as expected.
+            Use Google Chrome for best experience.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
 
     <!-- SERIES START AND END DATE AND TIME SECTION -->
-    <div class = "series">
+    <div class="series">
         <!-- Series Start -->
-        <div class = "series-start">
-            <div class = "series-start-div-1">
+        <div class="series-start">
+            <div class="series-start-div-1">
                 <label for="series-start-date">Series start date:</label>
-                <input type="date" name = "series-start-date" id = "series-start-date" required>
+                <input type="date" name="series-start-date" id="series-start-date" required>
             </div>
-            <div class = "series-start-div-2">
+            <div class="series-start-div-2">
                 <label for="series-start-time">Series start time:</label>
-                <input type="time" name = "series-start-time" id = "series-start-time" required>
+                <input type="time" name="series-start-time" id="series-start-time" required>
             </div>
         </div>
         <!-- Series End -->
-        <div class = "series-end">
-            <div class = "series-end-div-1">
+        <div class="series-end">
+            <div class="series-end-div-1">
                 <label for="series-end-date">Series end date:</label>
-                <input type="date" name = "series-end-date" id = "series-end-date" required>
+                <input type="date" name="series-end-date" id="series-end-date" required>
             </div>
-            <div class = "series-end-div-2">
+            <div class="series-end-div-2">
                 <label for="series-end-time">Series end time:</label>
-                <input type="time" name = "series-end-time" id = "series-end-time" required>
+                <input type="time" name="series-end-time" id="series-end-time" required>
             </div>
         </div>
         <div class="export-button-container">
-            <button id = "export-button" onclick = "exportToCSV()">Export to CSV</button>
+            <button id="export-button" onclick="exportToCSV()">Export to CSV</button>
         </div>
     </div>
 
     <!-- SLEEP DATA ENTRY SECTION -->
     <div class="data-input">
-        <div class = "data-input-start">
+        <div class="data-input-start">
             <label for="sleep-start-date">Sleep start date:</label>
-            <input type="date" name = "sleep-start-date" id = "sleep-start-date" required>
+            <input type="date" name="sleep-start-date" id="sleep-start-date" required>
             <br>
             <br>
             <label for="sleep-start-time">Sleep start time:</label>
-            <input type="time" name = "sleep-start-time" id = "sleep-start-time" required>
+            <input type="time" name="sleep-start-time" id="sleep-start-time" required>
         </div>
-        <div class = "data-input-end">
+        <div class="data-input-end">
             <label for="sleep-end-date">Sleep end date:</label>
-            <input type="date" name = "sleep-end-date" id = "sleep-end-date" required>
+            <input type="date" name="sleep-end-date" id="sleep-end-date" required>
             <br>
             <br>
             <label for="sleep-end-time">Sleep end time:</label>
-            <input type="time" name = "sleep-end-time" id = "sleep-end-time" required>
+            <input type="time" name="sleep-end-time" id="sleep-end-time" required>
         </div>
         <div class="add-entry">
-            <button class = "add-entry-button" onclick = "addEntry()">
+            <button class="add-entry-button" onclick="addEntry()">
                 Add Entry
             </button>
         </div>
     </div>
 
     <!-- DISPLAY OF DATA SECTION -->
-    <div class = "display-container">
-        <div class = "display-sub-container">
+    <div class="display-container">
+        <div class="display-sub-container">
             <div class="display-container-heading">
                 <h1>Data Entries</h1>
             </div>
-            <div class = "toast-message-container">
-                <p id = "toast-message" class = "hidden-message">Placeholder Toast Message</p>
+            <div class="toast-message-container">
+                <p id="toast-message" class="hidden-message">Placeholder Toast Message</p>
             </div>
             <div class="display-container-delete-button">
-                <button class = "delete-all-button" onclick = "deleteAllEntries()">Delete All Entries
+                <button class="delete-all-button" onclick="deleteAllEntries()">Delete All Entries
                 </button>
             </div>
         </div>
-        <div class = "display">
+        <div class="display">
             <!-- Here the data instances will be inserted -->
             Looks like you haven't added your sleep data yet !
         </div>
     </div>
 </body>
+
 </html>

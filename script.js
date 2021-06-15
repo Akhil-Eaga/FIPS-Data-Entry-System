@@ -1,3 +1,6 @@
+// ---------- BROWSER DETECTION -----------
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
 // ---------- GLOBAL VARIABLES DECLARATION ----------
 
 // global array to store the data entry elements
@@ -12,6 +15,14 @@ const upperThresholdSleepDuration = 12;
 // this code block runs when the webpage window loads in the browser
 // acts kind of starting point for the program execution
 window.onload = function () {
+
+    setTimeout(function () {
+        if (isFirefox) {
+            var firefoxAlert = document.querySelector(".hide-firefox-alert");
+            firefoxAlert.classList.toggle("hide-firefox-alert");
+        }
+    }, 2000);
+
 
     if (localStorage.getItem("sleepdata") == null) {
         localStorage.setItem("sleepdata", JSON.stringify(data))
@@ -58,27 +69,34 @@ function addEntry() {
     tempData = [sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime];
 
     // basic data validation to check if any input is missing
-    if(tempData.includes("")){
+    if (tempData.includes("")) {
         alert("Start and end date and time fields cannot be empty.");
         return;
     }
-    if (isDuplicateEntry()){
+    // checks if the sleep instance is already present in the database
+    if (isDuplicateEntry()) {
         alert("Sleep data already present.\nPlease update your sleep data to make an new entry.");
         return;
     }
-    if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)){
+    // checks for validity of sleep start and end date-time
+    if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)) {
         alert("Start time cannot be after or equal to end time.\nPlease modify the input.");
         return;
     }
-    if (isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) != 0){
+    // checks for abnormal sleep durations
+    if (isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) != 0) {
         const status = isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime);
         var message = status == 1 ? "Abnormally long duration detected." : "Abnormally short duration detected.";
         message = message + " Do you wish to add this ?";
-        if(!confirm(message)){
+        if (!confirm(message)) {
             return;
         }
     }
-    
+
+    //--------------------------------------------------------------------
+    // program execution reaches here when all the above checks are passed
+    //--------------------------------------------------------------------
+
     // pushing the temp data into main data
     data.push(tempData);
 
@@ -87,20 +105,20 @@ function addEntry() {
 
     // pushing the main data into local storage
     localStorage.setItem("sleepdata", JSON.stringify(data));
-    
+
     // rendering the updated data
     displaySleepData();
 
     // displaying toast message to inform the user
     toastMessage("+ Added", "positive");
-    
+
 }
 
 // returns boolean true if the new instance is a duplicate, else returns false
-function isDuplicateEntry(){
+function isDuplicateEntry() {
     var strTempData = tempData.join(",");
-    for(var index = 0; index < data.length; index++){
-        if(strTempData == data[index].join(",")){
+    for (var index = 0; index < data.length; index++) {
+        if (strTempData == data[index].join(",")) {
             return true;
         }
     }
@@ -109,12 +127,12 @@ function isDuplicateEntry(){
 
 // deletes all the data entries from both front-end and back-end
 function deleteAllEntries() {
-    if(data.length == 0){
+    if (data.length == 0) {
         alert("No entries to delete.");
         return;
     }
 
-    if(!confirm("Click \"OK\" to delete all. Otherwise click \"Cancel\".")){
+    if (!confirm("Click \"OK\" to delete all. Otherwise click \"Cancel\".")) {
         return;
     }
 
@@ -144,19 +162,19 @@ function deleteEntry(event) {
 }
 
 // this function displays a toast message with the message string colored according to the emotion of the message
-function toastMessage(messageString, emotion = "neutral"){
+function toastMessage(messageString, emotion = "neutral") {
     var color;
     var backgroundColor;
 
-    if(emotion == "positive"){
+    if (emotion == "positive") {
         color = "green";
         backgroundColor = "lightgreen";
     }
-    else if (emotion == "negative"){
+    else if (emotion == "negative") {
         color = "red";
         backgroundColor = "rgba(255, 0, 0, 0.3)";
     }
-    else{
+    else {
         // neutral emotion
         color = "rgb(128, 128, 0)"; // dark yellow
         backgroundColor = "rgb(255, 255, 111)"; // light yellow
@@ -168,39 +186,39 @@ function toastMessage(messageString, emotion = "neutral"){
     toastMessageElement.style.color = color;
 
     toastMessageElement.classList.toggle("hidden-message");
-    
-    window.setTimeout(function(){
+
+    window.setTimeout(function () {
         toastMessageElement.classList.toggle("hidden-message");
     }, 1000);
 }
 
 // exports the sleep data into csv format
-function exportToCSV(){
-    seriesDateTimes = getSeriesDateTimes(); 
+function exportToCSV() {
+    seriesDateTimes = getSeriesDateTimes();
     // seriesDateTimes has the format of [seriesStartDate, seriesStartTime, seriesEndDate, seriesEndTime];
-    
+
     // checking if any data is present in the store for exporting
-    if(data.length == 0){
+    if (data.length == 0) {
         alert("No data to export.\nPlease add some sleep instances to use this feature");
         return; // preventing program execution ahead
     }
     // checking and preventing empty series date and time fields
-    if(seriesDateTimes.includes("")){
+    if (seriesDateTimes.includes("")) {
         alert("Please enter date and time values for series start and end");
         return; // preventing program execution ahead
     }
     // checking if series start is after series end
-    if(!isEndAfterStart(seriesDateTimes[0], seriesDateTimes[1], seriesDateTimes[2], seriesDateTimes[3])){
+    if (!isEndAfterStart(seriesDateTimes[0], seriesDateTimes[1], seriesDateTimes[2], seriesDateTimes[3])) {
         alert("Series start cannot be after or equal to series end.\nPlease modify the input.");
         return;
     }
     // checking if series start is before the first sleep start
-    if(!isValidSeriesStart(seriesDateTimes[0], seriesDateTimes[1], data[0][0], data[0][1])){
+    if (!isValidSeriesStart(seriesDateTimes[0], seriesDateTimes[1], data[0][0], data[0][1])) {
         alert("Series start cannot be after or equal to the first sleep start time.\nPlease modify your series start.");
         return; // preventing export to CSV
     }
     // checking if series end is after the last sleep end
-    if(!isValidSeriesEnd(data[data.length - 1][2], data[data.length - 1][3], seriesDateTimes[2], seriesDateTimes[3])){
+    if (!isValidSeriesEnd(data[data.length - 1][2], data[data.length - 1][3], seriesDateTimes[2], seriesDateTimes[3])) {
         alert("Series end cannot be before or equal to the last sleep end time.\nPlease modify your series end.");
         return; // preventing export to CSV
     }
@@ -210,16 +228,16 @@ function exportToCSV(){
 
     let csvContent = "data:text/csv;charset=utf-8,";
 
-    var columns = ["sleep.start", "sleep.end", "sleep.id","series.start.datetime", "series.stop.datetime"];
-    
+    var columns = ["sleep.start", "sleep.end", "sleep.id", "series.start.datetime", "series.stop.datetime"];
+
     // adding column names to csvContent
     csvContent = csvContent + columns.join(",") + "\r\n";
 
-    for(var id = 0; id < data.length; id++){
+    for (var id = 0; id < data.length; id++) {
         var sleepId = id + 1;
-        var modifiedStartTime =  data[id][1] + ":00";
-        var modifiedEndTime =  data[id][3] + ":00";
-        
+        var modifiedStartTime = data[id][1] + ":00";
+        var modifiedEndTime = data[id][3] + ":00";
+
         var strSleepInstance = data[id][0] + " " + modifiedStartTime + "," + data[id][2] + " " + modifiedEndTime + "," + sleepId + "," + seriesStartDateTime + "," + seriesEndDateTime;
 
         csvContent = csvContent + strSleepInstance + "\r\n";
@@ -234,17 +252,17 @@ function exportToCSV(){
 }
 
 // extracts the series start and end dates and times
-function getSeriesDateTimes(){
+function getSeriesDateTimes() {
     var seriesStartDate = document.getElementById("series-start-date").value;
     var seriesStartTime = document.getElementById("series-start-time").value;
     var seriesEndDate = document.getElementById("series-end-date").value;
     var seriesEndTime = document.getElementById("series-end-time").value;
-    
+
     return [seriesStartDate, seriesStartTime, seriesEndDate, seriesEndTime];
 }
 
 // checks if the end time is after the start time or not
-function isEndAfterStart(startDate, startTime, endDate, endTime){
+function isEndAfterStart(startDate, startTime, endDate, endTime) {
     var start = timeInSeconds(startDate, startTime);
     var end = timeInSeconds(endDate, endTime);
 
@@ -252,24 +270,25 @@ function isEndAfterStart(startDate, startTime, endDate, endTime){
 }
 
 // checks if the series start is before the first sleep start time
-function isValidSeriesStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime){
+function isValidSeriesStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime) {
     return isEndAfterStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime);
 }
 
 // checks if the last sleep time is before the series end time
-function isValidSeriesEnd(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime){
+function isValidSeriesEnd(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime) {
     console.log(lastSleepDate);
     console.log(lastSleepTime);
     console.log(seriesEndDate);
-    console.log(seriesEndTime); 
+    console.log(seriesEndTime);
     return isEndAfterStart(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime);
 }
 
-function timeInSeconds(date, time){
+// returns the number of seconds elapsed since epoch till the given date and time
+function timeInSeconds(date, time) {
     var dateInfo = date.split("-");
     var year = Number.parseInt(dateInfo[0]);
     var month = Number.parseInt(dateInfo[1]) - 1;
-    var day = Number.parseInt(dateInfo[2]); 
+    var day = Number.parseInt(dateInfo[2]);
 
     var timeInfo = time.split(":");
     var hours = Number.parseInt(timeInfo[0]);
@@ -277,19 +296,19 @@ function timeInSeconds(date, time){
     var seconds = 0;
     var d = new Date(year, month, day, hours, minutes, seconds);
     // since Math.floor returns the time in millseconds, the value is divided by 1000
-    return Math.floor(d/1000);
+    return Math.floor(d / 1000);
 }
 
 // returns 1 for abnormally long duration, -1 for abnormally short duration and 0 for valid sleep duration
-function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime){
+function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) {
     var duration = timeInSeconds(sleepEndDate, sleepEndTime) - timeInSeconds(sleepStartDate, sleepStartTime);
-    
+
     const lowerThresholdInSeconds = lowerThresholdSleepDuration * 3600;
     const upperThresholdInSeconds = upperThresholdSleepDuration * 3600;
-    if(duration < lowerThresholdInSeconds){
+    if (duration < lowerThresholdInSeconds) {
         return - 1; // represents abnormally short duration
     }
-    else if(duration > upperThresholdInSeconds){
+    else if (duration > upperThresholdInSeconds) {
         return 1; // represents abnormally long duration
     }
     else {
