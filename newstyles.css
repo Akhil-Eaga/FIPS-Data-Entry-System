@@ -225,9 +225,9 @@ header h1 {
     border-radius: 20px;
 }
 
-/* .hidden-message {
+.hidden-message {
     visibility: hidden;
-} */
+}
 
 .delete-all-button {
     background-color: #d16338;
