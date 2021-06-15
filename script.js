@@ -34,25 +34,53 @@ window.onload = function () {
 }
 
 // displays the sleep data on to the webpage
-function displaySleepData() {
-    // var tempArray = JSON.parse(localStorage.getItem("sleepdata"));
-    // display the tempArray in the div
+// function displaySleepData() {
+//     var displayArea = document.querySelector(".display");
 
+//     // reset the existing innerHTML to empty string
+//     displayArea.innerHTML = "<div class = 'data-instance'> <div>Sleep Start Date</div> <div>Sleep Start Time</div> <div>Sleep End Date</div> <div>Sleep End Time</div> <div>Actions</div> </div>";
+
+//     // rendering the entire data
+//     for (var i = 0; i < data.length; i++) {
+//         var displayString = "";
+//         var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)"><i class = "ion-trash-a"></i>Delete</button>'
+//         for (var j = 0; j < data[i].length; j++) {
+//             displayString += "<div>" + data[i][j] + "</div>" + "&nbsp;&nbsp;&nbsp;";
+//         }
+//         displayArea.innerHTML += '<div class = "data-instance" id = "' + i + '">' + displayString + deleteButtonString + "</div> <br>";
+//     }
+// }
+
+
+// // NEW VERSION - UNDER PROGRESS - displays the sleep data on to the webpage
+function displaySleepData() {
     var displayArea = document.querySelector(".display");
 
     // reset the existing innerHTML to empty string
     displayArea.innerHTML = "";
 
+    var rowStart = "<tr>";
+    var rowEnd = "</tr>";
+    var dataStart = "<td>";
+    var dataEnd = "</td>";
+
+    var displayString = "";
+    var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)"><i class = "ion-trash-a"></i> Delete</button>'
     // rendering the entire data
     for (var i = 0; i < data.length; i++) {
-        var displayString = "";
-        var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)"><i class = "ion-trash-a"></i></button>'
+        var rowData = "";
         for (var j = 0; j < data[i].length; j++) {
-            displayString += data[i][j] + "&nbsp;&nbsp;&nbsp;";
+            rowData = rowData + dataStart + data[i][j] + dataEnd;
         }
-        displayArea.innerHTML += '<div class = "data-instance" id = "' + i + '">' + displayString + deleteButtonString + "</div> <br>";
+        var row = "<tr class = 'data-instance' id = '" + i + "'>" + rowData + dataStart + deleteButtonString + dataEnd + rowEnd;
+        displayString = displayString + row;
     }
+
+    console.log("String is ", displayString);
+    var tableHeader = "<tr><th>Sleep Start Date</th> <th>Sleep Start Time</th> <th>Sleep End Date</th> <th>Sleep End Time</th> <th>Actions</th></tr>"
+    displayArea.innerHTML = "<table>" + tableHeader + displayString + "</table>";
 }
+
 
 // adds sleep data instane to the front end and localStorage
 function addEntry() {
