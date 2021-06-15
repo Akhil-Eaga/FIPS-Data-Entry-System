@@ -1,0 +1,241 @@
+/* TODO */
+/* Adjust the body element left and right padding using CSS media queries */
+/* -------------------------------------- */
+/* GLOBAL STYLES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 4rem 10rem;
+    background-color: #F1F5FD;
+    font-family: "Jost";
+    color: #292C29;
+    border-top: 10px solid #1842d6;
+}
+
+/* HEADER SECTION STYLES */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    font-family: Montserrat;
+    font-weight: 700;
+    color: #292C29;
+}
+
+.export-button-container {
+    display: flex;
+    flex-direction : row;
+    align-items: center;
+}
+
+#export-button {
+    background-color: #ff9a21;
+    border: 5px solid #ff9a21;
+    padding: 0.6rem 1rem;
+    border-radius: 30px;
+    color: white;
+    font-size: 1rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+#export-button:hover {
+    color: #ff9a21;
+    border-radius: 30px;
+    background-color: #F1F5FD;
+    font-size: 1rem;
+    outline: none;
+}
+
+#export-button:focus{
+    border-radius: 30px;
+    outline: none;
+    border: 5px solid #f8d4a8;
+}
+
+
+/* FIREFOX ALERT SECTION STYLES */
+
+.hide-firefox-alert {
+    display: none;
+}
+
+/* SERIES AND SLEEP SECTIONS STYLES */
+.series, .data-input {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.series label,
+.data-input label {
+    margin: 0;
+}
+
+.series input,
+.data-input input {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.series-start, 
+.series-end,
+.data-input-start,
+.data-input-end {
+    width: 49%;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.055);
+}
+
+.series-start div, 
+.series-end div,
+.data-input-start div,
+.data-input-end div {
+    border-radius: 10px 10px 0 0;
+    padding-left: 1rem;
+}
+
+.series-start-div-label, 
+.series-end-div-label,
+.sleep-start-div-label,
+.sleep-end-div-label {
+    background-color: rgb(219, 219, 219);
+    margin: 0;
+    padding-left: 1rem;
+    color: gray;
+    border-radius: 30px;
+}
+
+.series-start-div-label,
+.series-end-div-label {
+    border-left: 10px solid #e27639;
+}
+
+.sleep-start-div-label {
+    border-left: 10px solid #6dae41;
+}
+
+.sleep-end-div-label {
+    border-left: 10px solid #d0242d;
+}
+
+.series-start-div-label p,
+.series-end-div-label p,
+.sleep-start-div-label p,
+.sleep-end-div-label p {
+    margin: 0;
+}
+
+.series-start-flex-container,
+.series-end-flex-container,
+.sleep-start-flex-container,
+.sleep-end-flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 3rem;
+}
+
+/* SLEEP DATA SECTION SPECIFIC STYLES */
+.sleep-container {
+    margin-top: 1rem;
+}
+.add-entry {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-entry .sleep-data-heading {
+    display: flex;
+    align-items: center;
+}
+
+.add-entry .sleep-data-heading h4 {
+    margin: 0;
+}
+
+.add-entry-button {
+    background-color: #1842d6;
+    border: 5px solid #1842d6;
+    padding: 0.6rem 1rem;
+    border-radius: 30px;
+    color: white;
+    font-size: 1rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.add-entry-button:hover {
+    color: #1842d6;
+    border-radius: 30px;
+    background-color: #F1F5FD;
+    font-size: 1rem;
+    outline: none;
+}
+
+.add-entry-button:focus{
+    border-radius: 30px;
+    outline: none;
+    border: 5px solid #8a99ce;
+}
+
+/* DISPLAY SECTION STYLES */
+
+.display-container {
+    margin-top: 1rem;
+}
+
+.display-sub-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.display-container-heading,
+.toast-message-container {
+    display: flex;
+    align-items: center;
+}
+
+.display-container-heading h4,
+.toast-message-container p {
+    margin: 0;
+}
+
+.hidden-message {
+    visibility: hidden;
+  }
+
+.delete-all-button {
+    background-color: #d16338;
+    border: 5px solid #d16338;
+    padding: 0.6rem 1rem;
+    border-radius: 30px;
+    color: white;
+    font-size: 1rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.delete-all-button:hover {
+    color: #d16338;
+    border-radius: 30px;
+    background-color: #F1F5FD;
+    font-size: 1rem;
+    outline: none;
+}
+
+.delete-all-button:focus {
+    border-radius: 30px;
+    outline: none;
+    border: 5px solid #d8b8ac;
+}

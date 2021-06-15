@@ -32,6 +32,8 @@ header h1 {
   letter-spacing: 3px;
   text-align: center;
   font-size: 2rem;
+  font-family: Montserrat;
+  font-weight: 500;
 }
 
 /* FIREFOX ALERT SECTION STYLES */
@@ -142,7 +144,7 @@ header h1 {
   background-color: white;
 }
 
-/* DISPLAY SECTION STYLES */
+/* DISPLAY OF DATA SECTION STYLES */
 
 .display-container {
   width: 80%;
@@ -160,6 +162,11 @@ header h1 {
 .display-container-heading,
 .display-container-delete-button {
   flex: 1;
+}
+
+h2 {
+  font-family: Montserrat;
+  font-weight: 500;
 }
 
 .toast-message-container {
