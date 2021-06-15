@@ -195,12 +195,12 @@ function toastMessage(messageString, emotion = "neutral") {
     var backgroundColor;
 
     if (emotion == "positive") {
-        color = "green";
-        backgroundColor = "lightgreen";
+        color = "rgb(109,174,65)"; // dark green
+        backgroundColor = "rgba(109,174,65, 0.2)";
     }
     else if (emotion == "negative") {
-        color = "red";
-        backgroundColor = "rgba(255, 0, 0, 0.3)";
+        color = "rgb(209,99,56)"; // dark red
+        backgroundColor = "rgba(209,99,56, 0.2)"; // light red
     }
     else {
         // neutral emotion

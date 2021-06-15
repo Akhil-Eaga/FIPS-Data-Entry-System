@@ -212,9 +212,22 @@ header h1 {
     margin: 0;
 }
 
-.hidden-message {
+.toast-message-container {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+#toast-message {
+    background-color: rgb(255, 255, 111);
+    padding: 0.25rem 1rem;
+    color: rgb(128, 128, 0);
+    border-radius: 20px;
+}
+
+/* .hidden-message {
     visibility: hidden;
-  }
+} */
 
 .delete-all-button {
     background-color: #d16338;
