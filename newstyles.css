@@ -360,7 +360,10 @@ tr:last-child {
     .delete-entry-button {
         padding: 5px 10px;
     }
-    
+
+    .delete-entry-button:hover {
+        padding: 5px 10px;
+    }
 }
 
 @media only screen and (max-width: 890px) {
@@ -379,6 +382,12 @@ tr:last-child {
     #export-button,
     .add-entry-button,
     .delete-all-button {
+        padding: 10px 10px;
+    }
+
+    #export-button:hover,
+    .add-entry-button:hover,
+    .delete-all-button:hover {
         padding: 10px 10px;
     }
 }
