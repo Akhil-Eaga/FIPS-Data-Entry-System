@@ -26,4 +26,5 @@ Repo for the FIPS system code files
     b) Series start time cannot be after or equal first sleep start time  
     c) Series end cannot be before or equal last sleep end time  
     d) For each sleep instance the start time cannot be after or equal to the end time
-7) Firefox browser is detected and the user will be alerted of non standard date and time input fields behaviour  
+7) Firefox browser is detected and the user will be alerted of non standard date and time input fields behaviour
+8) Sleep start and end date fields are automatically filled to enhance user experience  
