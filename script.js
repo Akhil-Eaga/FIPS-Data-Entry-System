@@ -40,27 +40,8 @@ window.onload = function () {
     prepopulateDateFields();
 }
 
-// old version of the display method -new version is now implemented
-// displays the sleep data on to the webpage
-// function displaySleepData() {
-//     var displayArea = document.querySelector(".display");
 
-//     // reset the existing innerHTML to empty string
-//     displayArea.innerHTML = "<div class = 'data-instance'> <div>Sleep Start Date</div> <div>Sleep Start Time</div> <div>Sleep End Date</div> <div>Sleep End Time</div> <div>Actions</div> </div>";
-
-//     // rendering the entire data
-//     for (var i = 0; i < data.length; i++) {
-//         var displayString = "";
-//         var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)"><i class = "ion-trash-a"></i>Delete</button>'
-//         for (var j = 0; j < data[i].length; j++) {
-//             displayString += "<div>" + data[i][j] + "</div>" + "&nbsp;&nbsp;&nbsp;";
-//         }
-//         displayArea.innerHTML += '<div class = "data-instance" id = "' + i + '">' + displayString + deleteButtonString + "</div> <br>";
-//     }
-// }
-
-
-// NEW VERSION - COMPLETE - displays the sleep data on to the webpage
+// displays the sleep data on to the webpage in a tabular format
 function displaySleepData() {
     var displayArea = document.querySelector(".display");
 
@@ -186,10 +167,8 @@ function deleteAllEntries() {
 function deleteEntry(event) {
     var buttonElement = event.target; // gives the button element
     var dataElement = buttonElement.parentElement.parentElement; // gets the parent, which is the data entry itself
-    console.log(dataElement);
     // gets the id attribute of the data element and cast to integer to use it for deleting the element from array
     var indexToDelete = Number.parseInt(dataElement.id);
-    console.log("Index to delete: ", indexToDelete);
     const numberOfElementsToDelete = 1
     data.splice(indexToDelete, numberOfElementsToDelete);
 
@@ -416,8 +395,6 @@ function prepopulateDateFields() {
         // format of lastSleepInstance = [sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime];
         // format of dates = YYYY-MM-DD and format of times = HH:MM:SS  in 24hr format so no AM and PM info
 
-        console.log("last sleep data is ", lastSleepInstanceData);
-
         var secondsInOneDay = 86400;
         // converting the last sleep end date plus one more day to be prepopulate the next sleep start date
         var endDateInSeconds = timeInSeconds(lastSleepEndDate, lastSleepEndTime);
@@ -432,7 +409,6 @@ function prepopulateDateFields() {
 
         // the conditional in month is just adding a 0 if month is single digit. so june which is 6 get converted to 06
         var newEndDateInRequiredFormat = year + "-" + month + "-" + date;
-        console.log(newEndDateInRequiredFormat);
 
         // prepopulating the sleep start date to the last sleep end date in the database
         sleepStartDateField.value = lastSleepEndDate;
