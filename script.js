@@ -1,5 +1,6 @@
 // ---------- BROWSER DETECTION -----------
-var isFirefox = typeof InstallTrigger !== 'undefined';
+// detects if the page is loaded on firefox
+// var isFirefox = typeof InstallTrigger !== 'undefined';
 
 // ---------- GLOBAL VARIABLES DECLARATION ----------
 
@@ -16,7 +17,10 @@ const upperThresholdSleepDuration = 12;
 // acts kind of starting point for the program execution
 window.onload = function () {
 
+    // detecting Mozilla Firefox browser and alerting the user to use Google Chrome
     setTimeout(function () {
+        // isFirefox hold a boolean value true if the FIPS webpage is opened on Mozilla Firefox
+        var isFirefox = typeof InstallTrigger !== 'undefined';
         if (isFirefox) {
             var firefoxAlert = document.querySelector(".hide-firefox-alert");
             firefoxAlert.classList.toggle("hide-firefox-alert");
@@ -31,6 +35,9 @@ window.onload = function () {
         data = JSON.parse(localStorage.getItem("sleepdata"));
         displaySleepData();
     }
+
+    // auto filling the date fields upon page load
+    prepopulateDateFields();
 }
 
 // old version of the display method -new version is now implemented
@@ -141,7 +148,7 @@ function addEntry() {
     toastMessage("+ Added", "positive");
 
     // prepopulate the input date and time fields to the next day
-
+    prepopulateDateFields();
 }
 
 // returns boolean true if the new instance is a duplicate, else returns false
@@ -303,7 +310,6 @@ function isEndAfterStart(startDate, startTime, endDate, endTime) {
 // check if the series end time is before or equal to the last sleep end date and time
 // the difference in this method  is that this allows the first sleep date and time to be exactly equal to the series start date and time
 // and also it allows the last sleep date and time to be exactly equal to the series end date and time
-// This equality is not allowed for sleep entries that are logged in each day
 // this is the only difference between isEndAfterStart() and isEndAfterStartForSeries() methods 
 function isEndAfterStartForSeries(startDate, startTime, endDate, endTime) {
     var start = timeInSeconds(startDate, startTime);
@@ -336,7 +342,7 @@ function timeInSeconds(date, time) {
     var minutes = Number.parseInt(timeInfo[1]);
     var seconds = 0;
     var d = new Date(year, month, day, hours, minutes, seconds);
-    // since Math.floor returns the time in millseconds, the value is divided by 1000
+    // since Date() returns the time in millseconds, the value is divided by 1000 to convert time to seconds
     return Math.floor(d / 1000);
 }
 
@@ -354,6 +360,82 @@ function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, s
     }
     else {
         return 0; // represents valid duration
+    }
+}
+
+// prepopulates the sleep start and end date and time fields to the next day of the last sleep instance
+function prepopulateDateFields() {
+    //grab the sleep start date and time inputs
+    var sleepStartDateField = document.querySelector("#sleep-start-date");
+    var sleepEndDateField = document.querySelector("#sleep-end-date");
+
+    var sleepStartTimeField = document.querySelector("#sleep-start-time");
+    var sleepEndTimeField = document.querySelector("#sleep-end-time");
+
+    if (data.length == 0) {
+        // this means the user is new or all the entries are deleted
+        // so there is last sleep end date to use for prepopulating date fields
+        // to enhance user experience the date values will be prepopulated to today and tomorrow
+
+        // building the date for today in required format
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1;
+        month = (month < 10 ? "0" + month : month);
+        var date = today.getDate();
+        var todayInRequiredFormat = year + "-" + month + "-" + date;
+
+        // prepopulating the sleep start date to today
+        sleepStartDateField.value = todayInRequiredFormat;
+
+        // building the date for tomorrow in required format
+        var todayInMilliseconds = today.getTime();
+        var milliSecondsInOneDay = 24 * 60 * 60 * 1000;
+        var nextDay = new Date(todayInMilliseconds + milliSecondsInOneDay);
+        var year = nextDay.getFullYear();
+        var month = nextDay.getMonth() + 1;
+        month = (month < 10 ? "0" + month : month);
+        var date = nextDay.getDate();
+        var nextDayInRequiredFormat = year + "-" + month + "-" + date;
+
+        // prepopulating the sleep start date to tomorrow
+        sleepEndDateField.value = nextDayInRequiredFormat;
+    }
+
+    else {
+        // we will use the sleep end date to prepopulate the next sleep start date
+        // we will use the sleep end date plus one day to prepopulate the next sleep end date
+        var lastSleepInstanceData = data[data.length - 1];
+        var lastSleepEndDate = lastSleepInstanceData[2];
+        var lastSleepEndTime = lastSleepInstanceData[3];
+
+        // format of lastSleepInstance = [sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime];
+        // format of dates = YYYY-MM-DD and format of times = HH:MM:SS  in 24hr format so no AM and PM info
+
+        console.log("last sleep data is ", lastSleepInstanceData);
+
+        var secondsInOneDay = 86400;
+        // converting the last sleep end date plus one more day to be prepopulate the next sleep start date
+        var endDateInSeconds = timeInSeconds(lastSleepEndDate, lastSleepEndTime);
+        var newEndDateInMilliSeconds = (endDateInSeconds + secondsInOneDay) * 1000;
+        var newEndFullDate = new Date(newEndDateInMilliSeconds);
+
+        // extracting year, month and 
+        var year = newEndFullDate.getFullYear();
+        var month = newEndFullDate.getMonth() + 1;
+        month = (month < 10 ? "0" + month : month);
+        var date = newEndFullDate.getDate();
+
+        // the conditional in month is just adding a 0 if month is single digit. so june which is 6 get converted to 06
+        var newEndDateInRequiredFormat = year + "-" + month + "-" + date;
+        console.log(newEndDateInRequiredFormat);
+
+        // prepopulating the sleep start date to the last sleep end date in the database
+        sleepStartDateField.value = lastSleepEndDate;
+        sleepEndDateField.value = newEndDateInRequiredFormat;
+
+        sleepStartTimeField.value = "";
+        sleepEndTimeField.value = "";
     }
 }
 
