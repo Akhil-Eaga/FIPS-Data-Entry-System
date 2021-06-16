@@ -33,6 +33,7 @@ window.onload = function () {
     }
 }
 
+// old version of the display method -new version is now implemented
 // displays the sleep data on to the webpage
 // function displaySleepData() {
 //     var displayArea = document.querySelector(".display");
@@ -52,14 +53,13 @@ window.onload = function () {
 // }
 
 
-// // NEW VERSION - UNDER PROGRESS - displays the sleep data on to the webpage
+// NEW VERSION - COMPLETE - displays the sleep data on to the webpage
 function displaySleepData() {
     var displayArea = document.querySelector(".display");
 
     // reset the existing innerHTML to empty string
     displayArea.innerHTML = "";
 
-    var rowStart = "<tr>";
     var rowEnd = "</tr>";
     var dataStart = "<td>";
     var dataEnd = "</td>";
@@ -76,7 +76,7 @@ function displaySleepData() {
         displayString = displayString + row;
     }
 
-    console.log("String is ", displayString);
+    // console.log("String is ", displayString);
     var tableHeader = "<tr><th>Sleep Start Date</th> <th>Sleep Start Time</th> <th>Sleep End Date</th> <th>Sleep End Time</th> <th>Actions</th></tr>"
     displayArea.innerHTML = "<table>" + tableHeader + displayString + "</table>";
 }
@@ -122,7 +122,7 @@ function addEntry() {
     }
 
     //--------------------------------------------------------------------
-    // program execution reaches here when all the above checks are passed
+    // program execution reaches here only when all the above checks are passed
     //--------------------------------------------------------------------
 
     // pushing the temp data into main data
@@ -139,6 +139,8 @@ function addEntry() {
 
     // displaying toast message to inform the user
     toastMessage("+ Added", "positive");
+
+    // prepopulate the input date and time fields to the next day
 
 }
 
@@ -297,18 +299,29 @@ function isEndAfterStart(startDate, startTime, endDate, endTime) {
     return end > start;
 }
 
+// check if the series start time is before or equal to the first sleep start date and time
+// check if the series end time is before or equal to the last sleep end date and time
+// the difference in this method  is that this allows the first sleep date and time to be exactly equal to the series start date and time
+// and also it allows the last sleep date and time to be exactly equal to the series end date and time
+// This equality is not allowed for sleep entries that are logged in each day
+// this is the only difference between isEndAfterStart() and isEndAfterStartForSeries() methods 
+function isEndAfterStartForSeries(startDate, startTime, endDate, endTime) {
+    var start = timeInSeconds(startDate, startTime);
+    var end = timeInSeconds(endDate, endTime);
+
+    // please pay attention to the equality symbol which allows the series start date time to be equal to first sleep start date time
+    // and also allows the last sleep end date time and series end date time
+    return end >= start;
+}
+
 // checks if the series start is before the first sleep start time
 function isValidSeriesStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime) {
-    return isEndAfterStart(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime);
+    return isEndAfterStartForSeries(seriesStartDate, seriesStartTime, firstSleepDate, firstSleepTime);
 }
 
 // checks if the last sleep time is before the series end time
 function isValidSeriesEnd(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime) {
-    console.log(lastSleepDate);
-    console.log(lastSleepTime);
-    console.log(seriesEndDate);
-    console.log(seriesEndTime);
-    return isEndAfterStart(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime);
+    return isEndAfterStartForSeries(lastSleepDate, lastSleepTime, seriesEndDate, seriesEndTime);
 }
 
 // returns the number of seconds elapsed since epoch till the given date and time

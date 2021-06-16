@@ -297,6 +297,16 @@ tr {
     color: white;
     padding: 0.25rem 1rem;
     border-radius: 50px;
+    outline: none;
+}
+
+.delete-entry-button:focus {
+    background-color: #d16338;
+    border: 2px solid #d16338;
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 50px;
+    outline:none;
 }
 
 tr:nth-of-type(1) {
