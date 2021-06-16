@@ -338,3 +338,59 @@ td {
 tr:last-child {
     border-bottom: 2px solid #6e7890;
 }
+
+
+/* CSS MEDIA QUERIES */
+
+@media only screen and (max-width: 1280px) {
+    body {
+        padding: 2rem 2rem;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+
+    #series-start-date, 
+    #series-end-date,
+    #sleep-start-date,
+    #sleep-end-date {
+        width: 10rem;
+    }
+
+    .delete-entry-button {
+        padding: 5px 10px;
+    }
+    
+}
+
+@media only screen and (max-width: 890px) {
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .series-start-flex-container,
+    .series-end-flex-container,
+    .sleep-start-flex-container,
+    .sleep-end-flex-container {
+        padding: 0px 20px;
+    }
+
+    #export-button,
+    .add-entry-button,
+    .delete-all-button {
+        padding: 10px 10px;
+    }
+}
+
+@media only screen and (max-width: 735px) {
+
+    #series-start-date, 
+    #series-end-date,
+    #sleep-start-date,
+    #sleep-end-date {
+        width: 9rem;
+        font-size: 0.9rem;
+    }
+}
+

@@ -69,7 +69,6 @@ function displaySleepData() {
     displayArea.innerHTML = "<table>" + tableHeader + displayString + "</table>";
 }
 
-
 // adds sleep data instane to the front end and localStorage
 function addEntry() {
     // resetting the temporary data array
@@ -178,6 +177,9 @@ function deleteEntry(event) {
 
     // displaying a toast message to inform the user
     toastMessage("- Deleted", "negative");
+
+    // updating the prepopulated date fields upon deletion
+    prepopulateDateFields();
 }
 
 // this function displays a toast message with the message string colored according to the emotion of the message
