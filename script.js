@@ -185,8 +185,11 @@ function deleteAllEntries() {
 // deletes a specific entry upon clicking delete button of the sleep data instance
 function deleteEntry(event) {
     var buttonElement = event.target; // gives the button element
-    var dataElement = buttonElement.parentElement; // gets the parent, which is the data entry itself
-    var indexToDelete = Number.parseInt(dataElement.id); // gets the id attribute of the data element and casted to integer to be able to use it for deleting the element from the data array
+    var dataElement = buttonElement.parentElement.parentElement; // gets the parent, which is the data entry itself
+    console.log(dataElement);
+    // gets the id attribute of the data element and cast to integer to use it for deleting the element from array
+    var indexToDelete = Number.parseInt(dataElement.id);
+    console.log("Index to delete: ", indexToDelete);
     const numberOfElementsToDelete = 1
     data.splice(indexToDelete, numberOfElementsToDelete);
 
@@ -372,6 +375,7 @@ function prepopulateDateFields() {
     var sleepStartTimeField = document.querySelector("#sleep-start-time");
     var sleepEndTimeField = document.querySelector("#sleep-end-time");
 
+    // if there is no data in the local storage then if block will be executed otherwise else block will execute
     if (data.length == 0) {
         // this means the user is new or all the entries are deleted
         // so there is last sleep end date to use for prepopulating date fields
