@@ -60,7 +60,6 @@ function displaySleepData() {
         displayString = displayString + row;
     }
 
-    // console.log("String is ", displayString);
     var tableHeader = "<tr><th>S.No</th><th>Sleep Start Date</th> <th>Sleep Start Time</th> <th>Sleep End Date</th> <th>Sleep End Time</th> <th>Actions</th></tr>"
     displayArea.innerHTML = "<table>" + tableHeader + displayString + "</table>";
 }
@@ -85,31 +84,36 @@ function addEntry() {
         // toastMessage("Start and end date and time fields cannot be empty.", "negative")
         return;
     }
+
     // checks if the sleep instance is already present in the database
     if (isDuplicateEntry()) {
         alert("Sleep data already present.\nPlease update your sleep data to make a new entry.");
         // toastMessage("Sleep data already present. Please update your sleep data to make a new entry.", "negative")
         return;
     }
+
     // checks for validity of sleep start and end date-time
     if (!isEndAfterStart(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime)) {
         alert("Start time cannot be after or equal to end time.\nPlease modify the input.");
         return;
     }
+
     // checks for overlapping sleep durations
     var overlappingWith = isOverlappingWithOther(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime);
     if (overlappingWith != -1) {
         // alert("Overlapping sleep duration detected.\nPlease update your sleep data to make a new entry.");
-        overlappingWith = overlappingWith + 1; // added to convert 0 based index to 1 based serial number in the tables
-        toastMessage("Overlapping with entry " + overlappingWith, "negative");
+
+        // added to convert 0 based index to 1 based serial number in the tables
+        toastMessage("Overlapping with entry " + (overlappingWith + 1), "negative");
         return;
     }
 
     // checks for abnormal sleep durations
-    if (isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) != 0) {
-        const status = isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime);
-        var message = status == 1 ? "Abnormally long duration detected." : "Abnormally short duration detected.";
+    var status = isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime);
+    if (status != 0) {
+        var message = (status == 1) ? "Abnormally long duration detected." : "Abnormally short duration detected.";
         message = message + " Do you wish to add this ?";
+        // asking the user for confirmation before adding abnormal durations
         if (!confirm(message)) {
             return;
         }
@@ -119,19 +123,19 @@ function addEntry() {
     // program execution reaches here only when all the above checks are passed
     //--------------------------------------------------------------------
 
-    // pushing the temp data into main data
+    // pushing the temp data array into main data array
     data.push(tempData);
 
     // data array is sorted in chronological order 
     data.sort();
 
-    // pushing the main data into local storage
+    // pushing the main data into local storage which has the key name set to "sleepdata"
     localStorage.setItem("sleepdata", JSON.stringify(data));
 
-    // rendering the updated data
+    // rendering the updated data on the browser in a tabular format
     displaySleepData();
 
-    // displaying toast message to inform the user
+    // displaying toast message to inform the user that addition of entry is successful
     toastMessage("+ Added", "positive");
 
     // prepopulate the input date and time fields to the next day
@@ -367,14 +371,14 @@ function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, s
 // part 4: checks if the input ranges overlaps any particular sleep instance entirely
 // part 5: checks if both the input duration lower bounds and upper bounds are less than any existing instance start time
 // last part avoid unnecessary looping and performs early stopping
+// returns -1 to signify no overlap or
+// returns index value of the instance that the input sleep duration overlaps with
 function isOverlappingWithOther(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) {
-    console.log("Entered the overlap checking method");
     // -1 means not overlapping and also helps in resetting the variable value with each function call
     var overlappingWith = -1;
 
     if (data.length == 0) {
         // no overlap possible
-        console.log("No overlap possible");
         return overlappingWith;
     }
 
@@ -415,11 +419,16 @@ function isOverlappingWithOther(sleepStartDate, sleepStartTime, sleepEndDate, sl
         }
     }
 
-
+    // returning the final value of overlappingWith variable to the function in addEntry method
     return overlappingWith;
 }
 
 // prepopulates the sleep start and end date and time fields to the next day of the last sleep instance
+// if no data is available then the date fields are initialized to today and tomorrow
+// if some data is available then the sleep start is set to last sleep end date and sleep end is set to sleep start plus one day
+// upon deletion of a single entry this function to called to update the date fields if required
+// upon deletion all entries again this function is called
+// this method is also called upon window load to prefill the date fields according to the aforementioned scenarios
 function prepopulateDateFields() {
     //grab the sleep start date and time inputs
     var sleepStartDateField = document.querySelector("#sleep-start-date");
