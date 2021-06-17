@@ -419,6 +419,11 @@ function isOverlappingWithOther(sleepStartDate, sleepStartTime, sleepEndDate, sl
         }
     }
 
+    // highlighting the overlapped entry so the user can quickly find where the overlapped element is
+    if (overlappingWith != -1) {
+        highlightOverlappedEntry(overlappingWith);
+    }
+
     // returning the final value of overlappingWith variable to the function in addEntry method
     return overlappingWith;
 }
@@ -500,5 +505,22 @@ function prepopulateDateFields() {
         sleepStartTimeField.value = "";
         sleepEndTimeField.value = "";
     }
+}
+
+// this function highlights the overlapped instance for few seconds to help the user quickly find the overlapping instance
+function highlightOverlappedEntry(index) {
+    // input parameter "index" is the index of the overlapped instance in the data array
+    // adding one will give the serial number in the table
+    // adding one more will give the row in the table because heading is counted as one row
+    rowNumber = index + 2;
+
+    var row = document.querySelector("tr:nth-child(" + rowNumber.toString() + ")");
+    // toggling on the css class to highlight the row
+    row.classList.toggle("highlight-table-row");
+
+    // setting an timeout to toggle off the css class to bring back the normal styling
+    window.setTimeout(function () {
+        row.classList.toggle("highlight-table-row");
+    }, 5000);
 }
 

@@ -403,3 +403,7 @@ tr:last-child {
     }
 }
 
+
+.highlight-table-row {
+    background-color: rgb(255, 167, 167);
+}
