@@ -81,13 +81,14 @@ function addEntry() {
 
     // basic data validation to check if any input is missing
     if (tempData.includes("")) {
-        // alert("Start and end date and time fields cannot be empty.");
-        toastMessage("Start and end date and time fields cannot be empty.", "negative")
+        alert("Start and end date and time fields cannot be empty.");
+        // toastMessage("Start and end date and time fields cannot be empty.", "negative")
         return;
     }
     // checks if the sleep instance is already present in the database
     if (isDuplicateEntry()) {
         alert("Sleep data already present.\nPlease update your sleep data to make a new entry.");
+        // toastMessage("Sleep data already present. Please update your sleep data to make a new entry.", "negative")
         return;
     }
     // checks for validity of sleep start and end date-time
@@ -166,6 +167,9 @@ function deleteAllEntries() {
 
     // displaying a toast message to inform the user
     toastMessage("- Deleted all entries", "negative");
+
+    // updating the prepopulated date fields upon deletion
+    prepopulateDateFields();
 }
 
 // deletes a specific entry upon clicking delete button of the sleep data instance
@@ -355,43 +359,63 @@ function isAbnormalSleepDuration(sleepStartDate, sleepStartTime, sleepEndDate, s
     }
 }
 
+// checks if the input parameter sleep duration is overlapping with any existing data
+// performs the check in 5 parts
+// part 1: checks if any data is already present or not to avoid trivial error cases
+// part 2: checks if the lower bound of input duration is falling in between any of the existing sleep ranges
+// part 3: checks if the upper bound of input duration is falling in between any of the existing sleep ranges
+// part 4: checks if the input ranges overlaps any particular sleep instance entirely
+// part 5: checks if both the input duration lower bounds and upper bounds are less than any existing instance start time
+// last part avoid unnecessary looping and performs early stopping
 function isOverlappingWithOther(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) {
-    // ------------------ PSEUDO CODE ------------------
-    // run a loop from index 0 to index = length -1
-    // at each iteration check if the start time or end time are falling within the start and end time ranges of each instance
-    // if it is overlapping, return true
-    // else continue until the loop ends
-    // if no overlaps are found, then return false
-
+    console.log("Entered the overlap checking method");
+    // -1 means not overlapping and also helps in resetting the variable value with each function call
     var overlappingWith = -1;
 
+    if (data.length == 0) {
+        // no overlap possible
+        console.log("No overlap possible");
+        return overlappingWith;
+    }
+
+    // start and end times of the input instance
     var startTime = timeInSeconds(sleepStartDate, sleepStartTime);
     var endTime = timeInSeconds(sleepEndDate, sleepEndTime);
+
     for (var i = 0; i < data.length; i++) {
         var instanceStartTime = timeInSeconds(data[i][0], data[i][1]);
         var instanceEndTime = timeInSeconds(data[i][2], data[i][3]);
 
-        // check if the input parameter start time is in between the instance start and end times
-        if (instanceStartTime <= startTime && startTime <= instanceEndTime) {
-            // the input parameter start time is overlapping with the data instance at index i
-
-            // means overlapping
-            overlappingWith = i;
-            return overlappingWith;
+        // checking if the input start and end are before a particular instance start time to stop early
+        if (startTime < instanceStartTime && endTime < instanceStartTime) {
+            // there is no need to loop further to check for overlaps
+            break;
         }
-        // although both the if conditions can be chained together, they are written separately for code readability
-        // check if the input parameter end time is in between the instance start and end times
-        if (instanceStartTime <= endTime && endTime <= instanceEndTime) {
-            // the input parameter end time is overlapping with the data instance at index i
 
-            // means overlapping
+        // the following 3 conditions can be written in one combined condition
+        // but is written this way to enhance code readability
+
+        // condition 1: if startTime is in between the instanceStartTime and instanceEndTime
+        if (instanceStartTime <= startTime && startTime <= instanceEndTime) {
+            // means the starting time of input parameters is overlapping with ith index sleep instance
             overlappingWith = i;
-            return overlappingWith;
+            break;
+        }
+        // condition 2: if endTime is in between the instanceStartTime and instanceEndTime
+        if (instanceStartTime <= endTime && endTime <= instanceEndTime) {
+            // means the ending time of input parameters is overlapping with ith index sleep instance
+            overlappingWith = i;
+            break;
+        }
+        // condition 3: if startTime is less than instanceStartTime and endTime is greater than instanceEndTime
+        if (startTime <= instanceStartTime && instanceEndTime <= endTime) {
+            // means the ith index sleep instance is a subduration of the input parameter
+            overlappingWith = i;
+            break;
         }
     }
 
-    // if program exection reaches here, that means the input is not overlapping with any data instances
-    // so return false to signify that the new input instance is not overlapping
+
     return overlappingWith;
 }
 
