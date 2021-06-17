@@ -11,9 +11,9 @@ Repo for the FIPS system code files
 
 ## Role of each code file:
 1) index.html - Contains the HTML code that renders the front end
-2) styles.css - This is CSS file used to add a bit of styling and layout to the front end
+2) newstyles.css - This is CSS file used to add a bit of styling and layout to the front end
 3) script.js - Adds functionality to the front end FIPS system
-
+4) styles.css - This file contains the old styling css rules (not currently used in the FIPS styling)  
 
 ## Features available:
 1) Automatic sorting of the sleep data
@@ -29,4 +29,5 @@ Repo for the FIPS system code files
 7) Firefox browser is detected and the user will be alerted of non standard date and time input fields behaviour
 8) Sleep start and end date fields are automatically filled to enhance user experience  
 9) Overlapping input durations are detected and prevented to ensure good data quality  
+10) Overlapped instances are highlight to help the user quickly find the instance that is overlapping with the current input  
 
