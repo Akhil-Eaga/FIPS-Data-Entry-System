@@ -28,3 +28,5 @@ Repo for the FIPS system code files
     d) For each sleep instance the start time cannot be after or equal to the end time
 7) Firefox browser is detected and the user will be alerted of non standard date and time input fields behaviour
 8) Sleep start and end date fields are automatically filled to enhance user experience  
+9) Overlapping input durations are detected and prevented to ensure good data quality  
+
