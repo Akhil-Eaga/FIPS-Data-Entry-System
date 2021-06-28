@@ -339,6 +339,45 @@ tr:last-child {
     border-bottom: 2px solid #6e7890;
 }
 
+/* HIGHLIGHT TABLE ROWS */
+
+.highlight-table-row {
+    background-color: rgb(255, 167, 167) !important;
+}
+
+
+/* COPY 24 HOURS SECTION STYLES */
+
+.copy-24-hours-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+.copy-24-hours-button {
+    background-color: #F1F5FD;
+    border: 3px solid #ff9a21;
+    padding: 0.6rem 1rem;
+    border-radius: 30px;
+    color: #ff9a21;
+    font-size: 1rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.copy-24-hours-button:hover {
+    color: white;
+    border-radius: 30px;
+    background-color: #ff9a21;
+    font-size: 1rem;
+    outline: none;
+}
+
+.copy-24-hours-button:focus {
+    border-radius: 30px;
+    outline: none;
+    border: 3px solid #f8d4a8;
+}
 
 /* CSS MEDIA QUERIES */
 
@@ -404,6 +443,3 @@ tr:last-child {
 }
 
 
-.highlight-table-row {
-    background-color: rgb(255, 167, 167);
-}

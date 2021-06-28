@@ -65,15 +65,20 @@ function displaySleepData() {
 }
 
 // adds sleep data instane to the front end and localStorage
-function addEntry() {
+function addEntry(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) {
     // resetting the temporary data array
     tempData = [];
 
     // get the sleep data values
-    var sleepStartDate = document.querySelector("#sleep-start-date").value;
-    var sleepStartTime = document.querySelector("#sleep-start-time").value;
-    var sleepEndDate = document.querySelector("#sleep-end-date").value;
-    var sleepEndTime = document.querySelector("#sleep-end-time").value;
+    if (typeof (sleepStartDate) === "undefined") {
+        // means arguments are not passed to the function
+        // so grab them from the date and time fields
+        // addEntry function with input values is used by the copyTheLastEntryToNextDay() function
+        var sleepStartDate = document.querySelector("#sleep-start-date").value;
+        var sleepStartTime = document.querySelector("#sleep-start-time").value;
+        var sleepEndDate = document.querySelector("#sleep-end-date").value;
+        var sleepEndTime = document.querySelector("#sleep-end-time").value;
+    }
 
     // collecting the data input values into a temp array
     tempData = [sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime];
@@ -494,6 +499,7 @@ function prepopulateDateFields() {
         var month = newEndFullDate.getMonth() + 1;
         month = (month < 10 ? "0" + month : month);
         var date = newEndFullDate.getDate();
+        date = (date < 10 ? "0" + date : date);
 
         // the conditional in month is just adding a 0 if month is single digit. so june which is 6 get converted to 06
         var newEndDateInRequiredFormat = year + "-" + month + "-" + date;
@@ -522,5 +528,51 @@ function highlightOverlappedEntry(index) {
     window.setTimeout(function () {
         row.classList.toggle("highlight-table-row");
     }, 5000);
+}
+
+// this function takes the last sleep data and adds 24 hrs to it and then adds the entry to the database table
+function copyTheLastEntryToNextDay() {
+
+    if (data.length == 0) {
+        toastMessage("Please add atleast one entry to use this functionality", "negative");
+        return;
+    }
+
+    //grab the sleep start date and time inputs
+    var lastSleepStartDate = data[data.length - 1][0];
+    var lastSleepStartTime = data[data.length - 1][1];
+
+    var lastSleepEndDate = data[data.length - 1][2];
+    var lastSleepEndTime = data[data.length - 1][3];
+
+    var newSleepStartDate = addOneDay(lastSleepStartDate, lastSleepStartTime);
+    var newSleepStartTime = lastSleepStartTime;
+
+    var newSleepEndDate = addOneDay(lastSleepEndDate, lastSleepEndTime);
+    var newSleepEndTime = lastSleepEndTime;
+
+    // calling the addEntry function with the above values are arguments
+    addEntry(newSleepStartDate, newSleepStartTime, newSleepEndDate, newSleepEndTime);
+
+    prepopulateDateFields();
+}
+
+// takes inputs as date and time, and returns the next day of the input date
+function addOneDay(date, time) {
+    var secondsInOneDay = 86400;
+    // converting the last sleep end date plus one more day to be prepopulate the next sleep start date
+    var dateInSeconds = timeInSeconds(date, time);
+    var nextDateInMilliSeconds = (dateInSeconds + secondsInOneDay) * 1000;
+    var nextFullDate = new Date(nextDateInMilliSeconds);
+
+    // extracting year, month and 
+    var year = nextFullDate.getFullYear();
+    var month = nextFullDate.getMonth() + 1;
+    month = (month < 10 ? "0" + month : month);
+    var date = nextFullDate.getDate();
+    date = (date < 10 ? "0" + date : date);
+
+    var result = year + "-" + month + "-" + date;
+    return result;
 }
 
