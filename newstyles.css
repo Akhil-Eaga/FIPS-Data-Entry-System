@@ -420,13 +420,15 @@ tr:last-child {
 
     #export-button,
     .add-entry-button,
-    .delete-all-button {
+    .delete-all-button,
+    .copy-24-hours-button {
         padding: 10px 10px;
     }
 
     #export-button:hover,
     .add-entry-button:hover,
-    .delete-all-button:hover {
+    .delete-all-button:hover,
+    .copy-24-hours-button:hover {
         padding: 10px 10px;
     }
 }
