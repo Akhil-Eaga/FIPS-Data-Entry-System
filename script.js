@@ -49,7 +49,7 @@ function displaySleepData() {
     var dataEnd = "</td>";
 
     var displayString = "";
-    var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)"><i class = "ion-trash-a"></i> Delete</button>'
+    var deleteButtonString = '<button class = "delete-entry-button" onclick = "deleteEntry(event)" title = "Deletes this entry from the table."><i class = "ion-trash-a"></i> Delete</button>'
     // rendering the entire data
     for (var i = 0; i < data.length; i++) {
         var rowData = "<td>" + (i + 1) + "</td>";

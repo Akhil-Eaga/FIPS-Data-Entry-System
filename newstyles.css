@@ -379,6 +379,17 @@ tr:last-child {
     border: 3px solid #f8d4a8;
 }
 
+/* --------------------------------------------------------------------------------------------------------------- */
+
+/* TOOLTIPS STYLING SECTION */
+
+/* https://stackoverflow.com/questions/2011142/how-to-change-the-style-of-the-title-attribute-inside-an-anchor-tag */
+
+/* Check the top two solutions in the above link for tooltip styling */
+
+/* --------------------------------------------------------------------------------------------------------------- */
+
+
 /* CSS MEDIA QUERIES */
 
 @media only screen and (max-width: 1280px) {

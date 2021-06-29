@@ -63,7 +63,9 @@
             <h1>FIPS Data Entry System</h1>
         </div>
         <div class="export-button-container">
-            <button id="export-button" onclick="exportToCSV()"><i class="ion-android-arrow-down"></i> Download</button>
+            <button id="export-button" onclick="exportToCSV()" title="Click to download the data in CSV format."><i
+                    class="ion-android-arrow-down"></i>
+                Download</button>
         </div>
     </header>
 
@@ -80,6 +82,7 @@
 
     <!-- SERIES START AND END DATE AND TIME SECTION -->
     <div class="series">
+
         <!-- Series Start -->
         <div class="series-start">
             <div class="series-start-div-label">
@@ -127,7 +130,8 @@
             <div class="sleep-data-heading">
                 <h4>Enter sleep data</h4>
             </div>
-            <button class="add-entry-button" onclick="addEntry()">
+            <button class="add-entry-button" onclick="addEntry()"
+                title="Adds the date and time fields to the table below.">
                 + Add Entry
             </button>
         </div>
@@ -178,7 +182,8 @@
                 <p id="toast-message" class="hidden-message">Placeholder Toast Message</p>
             </div>
             <div class="display-container-delete-button">
-                <button class="delete-all-button" onclick="deleteAllEntries()"><i class="ion-trash-a"></i> Delete All
+                <button class="delete-all-button" onclick="deleteAllEntries()"
+                    title="Deletes all the entries from the table below."><i class="ion-trash-a"></i> Delete All
                 </button>
             </div>
         </div>
@@ -191,9 +196,10 @@
 
     <!-- COPY +24HRS OF LAST ENTRY SECTION -->
     <div class="copy-24-hours-button-container">
-        <button class="copy-24-hours-button" onclick="copyTheLastEntryToNextDay()"><i class="ion-ios-copy"></i>
-            Copy +24
-            hrs
+        <button class="copy-24-hours-button" onclick="copyTheLastEntryToNextDay()"
+            title="Copies the date and time fields of the last entry in the table, adds 24hrs to that and adds it back to the table."><i
+                class="ion-ios-copy"></i>
+            Copy +24 hrs
         </button>
     </div>
 </body>
