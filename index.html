@@ -57,13 +57,16 @@
 </head>
 
 <body>
+
+
     <!-- HEADER SECTION -->
     <header class="fips-header">
         <div>
-            <h1>FIPS Data Entry System</h1>
+            <h1>FIPS Data Entry System <button class="more-info-button" onclick="toggleOverlay()"
+                    title="Click for more info"><i class="ion-ios-information"></i></button> </h1>
         </div>
         <div class="export-button-container">
-            <button id="export-button" onclick="exportToCSV()" title="Click to download the data in CSV format."><i
+            <button class="export-button" onclick="exportToCSV()" title="Click to download the data in CSV format."><i
                     class="ion-android-arrow-down"></i>
                 Download</button>
         </div>
@@ -201,6 +204,55 @@
                 class="ion-ios-copy"></i>
             Copy +24 hrs
         </button>
+    </div>
+
+
+
+    <!-- OVERLAY SECTION -->
+    <!-- this section is kept the end of the body section to avoid causing trouble with highlighting the overlapped entries in the table as the styling for that used the table tags -->
+    <div class="modal-container hide-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Help guide</h1>
+                <button class="modal-close-button" onclick="toggleOverlay()"><i class="ion-android-close"></i></button>
+            </div>
+
+            <table class="modal-table">
+                <tbody>
+                    <tr>
+                        <th>Button</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><button class="export-button-modal modal-button"><i class="ion-android-arrow-down"></i>
+                                Download</button></td>
+                        <td>Click to download the data in CSV format</td>
+                    </tr>
+                    <tr>
+                        <td><button class="add-entry-button-modal modal-button">+ Add Entry</button>
+                        </td>
+                        <td>Adds the date and time fields to the table below</td>
+                    </tr>
+                    <tr>
+                        <td><button class="delete-all-button-modal modal-button"><i class="ion-trash-a"></i> Delete
+                                All</button></td>
+                        <td>Deletes all the entries from the table below</td>
+                    </tr>
+                    <tr>
+                        <td><button class="delete-entry-button-modal modal-button"><i class="ion-trash-a"></i>
+                                Delete</button></td>
+                        <td>Deletes that particular entry from the table</td>
+                    </tr>
+                    <tr>
+                        <td><button class="copy-24-hours-button-modal modal-button"><i class="ion-ios-copy"></i>
+                                Copy +24 hrs</button></td>
+                        <td>Copies the date and time fields of the last entry in the table, <br> adds 24hrs to that and
+                            adds
+                            it back to the table</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 

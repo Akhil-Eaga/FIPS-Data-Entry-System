@@ -576,3 +576,8 @@ function addOneDay(date, time) {
     return result;
 }
 
+function toggleOverlay() {
+    document.querySelector(".modal-container").classList.toggle("hide-overlay");
+    document.body.classList.toggle("hide-scroll");
+}
+

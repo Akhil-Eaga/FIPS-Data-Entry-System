@@ -17,6 +17,87 @@ body {
     border-top: 10px solid #1842d6;
 }
 
+/* common styles of the modal buttons */
+.modal-button {
+    outline: none;
+    pointer-events: none;
+}
+
+/* MORE INFO BUTTON STYLES */
+
+.more-info-button {
+    border: none;
+    background-color: rgba(0,0,0,0);
+    outline: none;
+    transition: transform 0.3s;
+    /* transform: scale(0.5); */
+    font-size: 1.2rem;
+}
+
+.more-info-button:hover {
+    transform: scale(1.2);
+}
+
+.more-info-button:focus {
+    background-color: rgba(0,0,0,0);
+    outline: none;
+}
+
+
+/* OVERLAY SECTION STYLES */
+
+.hide-overlay {
+    display: none;
+}
+
+.hide-scroll {
+    overflow: hidden;
+}
+
+.modal-container {
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0,0,0,0.7);
+}
+
+.modal-close-button {
+    background-color: rgba(0,0,0,0);
+    border: none;
+    font-size: 2rem;
+    padding: 0 0.8rem;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.modal-close-button:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.modal-close-button:focus {
+    outline: none;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    border-top: 10px solid #1842d6;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.modal-table {
+    margin-bottom: 1rem;
+}
+
+
 /* HEADER SECTION STYLES */
 
 header {
@@ -37,7 +118,8 @@ header h1 {
     align-items: center;
 }
 
-#export-button {
+.export-button,
+.export-button-modal {
     background-color: #ff9a21;
     border: 3px solid #ff9a21;
     padding: 0.6rem 1rem;
@@ -47,7 +129,7 @@ header h1 {
     transition: color 0.2s, background-color 0.2s;
 }
 
-#export-button:hover {
+.export-button:hover {
     color: #ff9a21;
     border-radius: 30px;
     background-color: #F1F5FD;
@@ -55,7 +137,7 @@ header h1 {
     outline: none;
 }
 
-#export-button:focus{
+.export-button:focus{
     border-radius: 30px;
     outline: none;
     border: 3px solid #f8d4a8;
@@ -166,7 +248,8 @@ header h1 {
     margin: 0;
 }
 
-.add-entry-button {
+.add-entry-button,
+.add-entry-button-modal {
     background-color: #1842d6;
     border: 3px solid #1842d6;
     padding: 0.6rem 1rem;
@@ -229,7 +312,8 @@ header h1 {
     visibility: hidden;
 }
 
-.delete-all-button {
+.delete-all-button,
+.delete-all-button-modal {
     background-color: #d16338;
     border: 3px solid #d16338;
     padding: 0.6rem 1rem;
@@ -282,7 +366,8 @@ tr {
     border: 2px solid #e9ecf4;
 }
 
-.delete-entry-button {
+.delete-entry-button,
+.delete-entry-button-modal {
     background-color: white;
     border: 2px solid #d16338;
     color: #d16338;
@@ -355,8 +440,10 @@ tr:last-child {
     margin-top: 1rem;
 }
 
-.copy-24-hours-button {
-    background-color: #F1F5FD;
+.copy-24-hours-button,
+.copy-24-hours-button-modal {
+    /* background-color: #F1F5FD; */
+    background-color: white;
     border: 3px solid #ff9a21;
     padding: 0.6rem 1rem;
     border-radius: 30px;
@@ -407,8 +494,10 @@ tr:last-child {
         width: 10rem;
     }
 
-    .delete-entry-button {
+    .delete-entry-button,
+    .delete-entry-button-modal {
         padding: 5px 10px;
+        font-size: 0.9rem;
     }
 
     .delete-entry-button:hover {
@@ -429,14 +518,18 @@ tr:last-child {
         padding: 0px 20px;
     }
 
-    #export-button,
+    .export-button,
+    .export-button-modal,
     .add-entry-button,
+    .add-entry-button-modal,
     .delete-all-button,
-    .copy-24-hours-button {
+    .delete-all-button-modal,
+    .copy-24-hours-button,
+    .copy-24-hours-button-modal {
         padding: 10px 10px;
     }
 
-    #export-button:hover,
+    .export-button:hover,
     .add-entry-button:hover,
     .delete-all-button:hover,
     .copy-24-hours-button:hover {
@@ -452,6 +545,14 @@ tr:last-child {
     #sleep-end-date {
         width: 9rem;
         font-size: 0.9rem;
+    }
+
+    body {
+        font-size: 0.8rem;
+    }
+
+    button {
+        font-size: 0.8rem !important;
     }
 }
 
