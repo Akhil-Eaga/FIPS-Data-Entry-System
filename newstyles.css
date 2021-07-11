@@ -535,6 +535,13 @@ tr:last-child {
     .copy-24-hours-button:hover {
         padding: 10px 10px;
     }
+
+    .delete-entry-button {
+        font-size: 0.8rem;
+    }
+    .delete-entry-button .ion-trash-a {
+        display: none !important;
+    }
 }
 
 @media only screen and (max-width: 735px) {
@@ -553,6 +560,14 @@ tr:last-child {
 
     button {
         font-size: 0.8rem !important;
+    }
+
+    .delete-entry-button {
+        font-size: 0.7rem !important;
+    }
+
+    .delete-entry-button .ion-trash-a {
+        display: none !important;
     }
 }
 
