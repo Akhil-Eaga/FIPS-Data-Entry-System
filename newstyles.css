@@ -86,6 +86,8 @@ body {
     transform: translate(-50%, -50%);
     width: fit-content;
     border-top: 10px solid #1842d6;
+    /* border-top: 10px solid #ff9a21; */
+    
     padding: 2rem;
     border-radius: 10px;
 }
@@ -94,6 +96,36 @@ body {
     margin-bottom: 1rem;
 }
 
+/* CUSTOM ALERT BOX STYLING */
+.alert-container {
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0,0,0,0.7);
+}
+
+.alert-content {
+    position: absolute;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    margin-left: 1rem;
+    min-width: 40%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    border-top: 10px solid #1842d6;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.ion-android-warning {
+    margin-right: 1rem;
+    color: #ff9a21;
+}
 
 /* HEADER SECTION STYLES */
 

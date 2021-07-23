@@ -576,8 +576,10 @@ function addOneDay(date, time) {
     return result;
 }
 
+// this function toggles the overlay and the scroll
+// when the overlay is on (i,e., the modal is displayed) then the scroll is turned off
 function toggleOverlay() {
     document.querySelector(".modal-container").classList.toggle("hide-overlay");
+    // prevents scrolling when the overlay is on
     document.body.classList.toggle("hide-scroll");
 }
-
