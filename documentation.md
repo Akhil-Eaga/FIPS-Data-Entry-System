@@ -45,3 +45,19 @@ Along with the data, a delete button is added in each input row for deleting tha
   
 ### Help Guide Modal Overlay Section:  
 This section is used to toggle on and off a modal with helpful instructions to help the user understand the role of each button on the webpage. Scrolling is turned off when the modal is displayed to avoid unnecessary confusion to the user when the modal is turned on accidentally and page is scrolled to do something else. Turning off the scroll helps avoid such confusion to the user. The button to toggle this modal on and off is placed right next to the main heading in a very subtle non-intrusive way using an info style icon. And to close the modal, the user has to use the cross button that is placed towards the top right corner.  
+  
+  
+## newstyles.css:  
+This css file contains the code that is used to style the FIPS data entry system from ground up and is written using the CSS3 standard. The styles for each section are grouped together in the sequence they appear in the html file to make it easy for other teammates to find the relevant styles. Common styles like that of the buttons are grouped together where possible and are all placed in the location they were styled for the first time in the code. Global styles that normalize the appearance of the webpage on all browsers are written at the very beginning of the css file. 
+  
+Best practices for writing the css code are followed unless they interfered the meaning or the development of other code. Mostly class selectors are used to make the styles reusable and the styles that should not be applied more than once are coded through the usage of ID selectors. Colors used are mostly written in the hexadecimal format unless opacity is tweaked in certain cases like that of the modal background overlay where the usage of RGBA format is unavoidable.  
+  
+Some of the styles that need to be explained are ".hide-overlay" class selector which when added to any html element makes the element invisible by removing it from the document flow. This is used to turn on and off the modal overlay, hence the suitable name. Other css selector ".hide-scroll" is used to turn off the scroll by restricting the overflow css property to hidden. These two css selectors are used simulataneously to display the modal and turn off the scroll and viceversa. These classes are added to and removed from (toggled) the modal related divs using the javascript attached to the html file. Another css selector ".hide-firefox-alert" although does exactly the same work as the ".hide-overlay" but is written separately just for the purpose of ease of reading html code without having to refer to css file often.  
+  
+The styles that are written for the data table representation depend on their position in the html document. So if some reason, a table is added somewhere above the display table, then the css code needs to be adjusted accordingly. For this precise reason, the table element within the modal caused a minor bug with the styling of overlapped sleep data entries. Since the modal is anyways going to be positioned absolutely, the html div that contained the modal content and the modal table is simply placed at the end of the body element.  
+
+Tooltips were added to each and every button in the html code to give out a simple tip to the user about the buttons' function. These tooltips are not styled in anyway using the css. 
+  
+At the end of all the section styles, all the media queries are placed to adjust the sizes and positions of fonts and html elements. All the media queries are pretty much self explanatory and only a handful of css properties are modified to make the page usable on ipads and devices of similar sizes. Since the use case for this FIPS data entry system is mostly on big screen devices like that of iPads, laptops and desktops, media queries are written to optimise the webpage appearance for those sizes only.  
+  
+
