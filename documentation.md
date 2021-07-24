@@ -73,15 +73,44 @@ Global variables and constants that are used throughout the script are defined a
   
 The array variable `data` stores all the sleep instances data in the form of subarrays. All the elements of the subarray are stored in the string format for ease of sorting them later on. The array variable `tempData` is used to temporarily store the data of one sleep instance while all the data validation checks are made and then once all checks are passed, `tempData` is pushed into the `data` and `tempData` will be reset to empty. Two constants are defined, one is `lowerThresholdSleepDuration` and `upperThresholdSleepDuration`. These are currently set to 1 hr and 12 hrs to determine if a sleep duration is abnormally short or abnormally long and subsequently warn the users of this scenario.  
   
-### window.onload function:
+
+### window.onload function:  
 The window.onload function is used to do setup several things. First thing that is done when the window loads, the browser in which the webpage is loaded is checked if the browser is firefox. If the browser is Firefox, then a warning message is displayed just below the main heading to warn the users. 
   
 Since the sleep data is stored in the localStorage, if some data exists in the localStorage then that data is extracted and the `data` array is filled with existing data upon page load. And once the array is filled with previous data, the data is displayed to the user so that they know what data they have saved previously. After the previously stored data is displayed, a function call to prepopulate the date fields is made. This function invocation is made after the data is filled in the `data` array because the last entry in the data array is used for prepopulating the date fields.  
   
   
-### displaySleepData function:
-
-
+### displaySleepData function:  
+This function grabs the html element with the class `display` and resets the inner text to empty string. Defines some variables that are used to format the sleep data in to a tabular format. An empty string variable `displayString` is defined and is built using a for loop. A html string that is contains a delete button is defined as `deleteButtonString` and is added to each table row. In the for loop that follows, the `displayString` is built and formatted using all the above mentioned variables and during the loop each data entry is given and id that is equal to the index of the subarrray in the `data` array. The reason for this will be described in the `deleteEntry` function description below. After the loop finishes, table header is prepended to the `displayString` and is inserted into the document node that has the class `display`. This function finishes at this point and displays the data to the user.  
+  
+  
+### addEntry function:  
+This function accepts four parameters which are (in sequence) as follows:  
+1. `sleepStartDate`  
+2. `sleepStartTime`  
+3. `sleepEndDate`  
+4. `sleepEndTime`  
+  
+These variables are self explanatory in what they represent, and this function is called when the `Add Entry` button is clicked after entering some date and time field values. Within the function firstly, the `tempData` array is reset to an empty array. This function is used in two ways. One is by passing the stated parameters and other by passing the stated parameters. If the parameters are not passed which is the usual case when the add entry button is clicked, the function grabs all the required values from the respective date and time fields from the webpage and assigns the values to the exactly same named variables. When discussing about the implementation of the `copyTheLastEntryToNextDay` function we will talk about the `addEntry` function being invoked along with the proper arguments. All the grabbed values are placed in the tempData array and checked for empty values. Once this check is passed, the values are checked with existing data to detect a duplicate entry, and then another check is made to ensure that the end date and time are indeed after the start date and time. Once all the above checks are done, the user entered data is checked for any overlaps with already existing data. Once the data passes this check, it is checked with the threshold limits we have set in the global variables section and a warning alert is shown to the user. Except for the abnormal short and long durations condition, rest all conditions prevent the sleep instance from being added to the localStorage. Once all the conditions are passed, `tempData` is pushed into the actual data array and sort function is invoked on it. Since all the date and time fields are ordered in sequence and are of string type, natural ordering of the strings is sufficient to sort the dat without the need for any comparator. After sorting the data in saved in localStorage by overwriting the previous data. Since the localStorage can only contain the strings as the values, the `data` array is stringified using the JSON.stringify function. A call to the `displaySleepData` is made to reflect the newly added data in the webpage. A toast message is displayed to indicate the user of the successful addition of the data instance. Since the newly added data might be the latest one, another call to `prepopulateDateFields` is made to update the date fields. The implementation of this function will be discussed in detail in later sections. This is the verbal description of the `addEntry` function in the script.js file.  
+  
+  
+### isDuplicate function:  
+This function checks if the newly entered data is a duplicate of any of the existing entries. To make this check easier, all the individual elements in the `tempData` array are joined into single string separated by commas. A for loop is executed on the subarrays of the `data` array by again converting each subarray into a string in the same fashion and checking if any existing elements match the new one. And this function returns a boolean value to indicate if the sleep instance is a duplcate or not.  
+  
+  
+### deleteAllEntries function:  
+This function is called when the `Delete All` button is clicked. If there are no entries in the localStorage then a simple alert is shown, else a confirmation dialog is presented asking the user for explicit confirmation to delete all entries. Once the user confirms, the `data` and `tempData` arrays are reset to empty arrays. The `sleepdata` key which holds the stringified version of the `data` array is set to the empty `data` array. A call to the `displaySleepData` is made to display the existing data which will update the table on the webpage to show no rows of sleep data. A toast message with relevant message is shown above the table to indicate to the user that the deletion was indeed successful. And since the prepopulation of the date fields depends on the existing sleep data, a call to the `prepopulateDateFields` is made to update the date fields' prefilled values. More on `prepopulateDateFields` later in the section. This is the role of the `deleteAllEntries`.  
+  
+  
+### deleteEntry function:  
+This function is called when the `delete` button is clicked in any of the table rows. This function takes in one parameter which is the click event that is passed as an argument by the `onclick` attribute within each table row elements. The event parameter that is passed into this function is used to figure out which table row within the table to be removed. The event.target gives us the button element. If the parent of the parent of the button is extracted, it is essentially the table row element. Then the `id` attribute value of that table row is extracted which was assigned to be the index of that sleep instance within the `data` array. The extracted id values is converted into number. Then the array splice method is used to delete 1 element from that index position. Then the new data array is assigned to the `sleepdata` key value in the localStorage. And as you might have expected, for this deletion operation to show up in the table on the webpage, a call to the `displaySleepData` is made and again a toast message is displayed above the table to indicate to the user that deletion has occurred. Since this change to the data array might affect the prepopulated values in the sleep start and end date values, a call to `prepopulateDateFields` is made. This is the role of `deleteEntry` function.  
+  
+  
+### toastMessage function:  
+This function is used to display the toast message that has already been referenced multiple times in the description of other functions. This function accepts two parameters. One is the message to be displayed and the other is the emotion through which the text color and background color of the toast message is adjusted. This emotion parameter has a default value of neutral. According to the passed in value of the emotion (which can take positive, negative and neutral as possible values) the color and background color are set to green, red and yellow respectively. The message string passed into the function is then set as the innerHTML of the element with the id `#toast-message`. Then the toast message is displayed by toggling on the `.hidden-message` class which basically sets the css property `display` to `hidden` and the same class is toggled off after 2000ms (i.e., 2 seconds) using the `window.setTimeout` to make the toast message go away from the webpage. This is the role of `toastMessage` function.  
+  
+  
+### exportToCSV function:  
 
 
 

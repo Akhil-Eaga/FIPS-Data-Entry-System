@@ -64,7 +64,7 @@ function displaySleepData() {
     displayArea.innerHTML = "<table>" + tableHeader + displayString + "</table>";
 }
 
-// adds sleep data instane to the front end and localStorage
+// adds sleep data instance to the front end and localStorage
 function addEntry(sleepStartDate, sleepStartTime, sleepEndDate, sleepEndTime) {
     // resetting the temporary data array
     tempData = [];
