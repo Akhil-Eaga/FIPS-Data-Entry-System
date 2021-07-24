@@ -111,6 +111,30 @@ This function is used to display the toast message that has already been referen
   
   
 ### exportToCSV function:  
-
+This function is invoked when the `Download` button is clicked. Upon invocation this function calls `getSeriesDateTimes` which returns an array that contains 4 elements and they represent `seriesStartDate`, `seriesStartTime`, `seriesEndDate` and `seriesEndTime`. Then the `data` array is checked if any elements are present or not. If not then an alert is shown to the user and the function returns. Another check is made to make sure no empty values are present in the series start and end, dates and times. Then another check is made to ensure that the series end date and time is after the series start date and time. Then two more checks are made to ensure that the series start date and time is before or equal to the first (chronologically) sleep session start date and time and also to ensure that the series end date and time is equal to or after the last sleep session end date and time. As per the formatting rules given by "Michael David Wilson", the time values are formatted in the HH:MM:SS format as compared to the HH:MM format that is default to the time fields. Then the document header is configured to interpret data as CSV.
+Then the column headings are configured in the form of an array. A for loop is executed to format all the time values in the required format. The string that is built during the loop is appended to the `csvContent` variable which already contains the csv file header information. An empty `<a>` element is created and the href attribute is set to the result of encodedURI function and the download attribute is set to the default file name with which we prompt the user to download the CSV file. And we also simulate the click event by calling the click function on the `<a>` tag so the file gets downloaded when the `exportToCSV` function is invoked by the `Download` button.  
+  
+  
+### getSeriesDateTimes function:  
+This function is a helper function for the `exportToCSV` function. When this function is invoked, it grabs the series start and end, date and time values from those respective input fields on the webpage and collate them all into an array to return to the caller function.  
+  
+  
+### isEndAfterStart function:  
+This function is another helper function invoked by several functions for example, the `addEntry` function to check if the end date and time are after the start date and time or not. For this function to return true, the end date and time has to be after the start date and time (not even equal) as equal corresponds to zero time and zero duration does not make sense as a sleep duration. This function to perform its role, calls another function by passing the date and time values to get back the time in seconds that are lapsed since 1st January 1970. This time in seconds is extracted for both start date and time, and end date and time. Then they are compared against each other to determine if the end date and time is actually after the start date and time.  
+  
+  
+### isEndAfterStartForSeries function:  
+This function is another helper function that is extremely similar to the `isEndAfterStart` function with just one minor difference. The difference is that this function returns true when the end date and time is after or equal to the start date and time. The equality makes more sense in this situation because this function is used to check the series start date and time against the first sleep session start date and time. And similarly, series end date and time is compared against the last sleep session end date and time. As you might have expected this function and the `isEndAfterStart` function both take 4 parameters that represent start date, start time, end date and end time.  
+  
+  
+### isValidSeriesStart function:  
+This function is just a wrapper function that makes a call to the `isEndAfterStartSeries` by passing the parameters of series start date, series start time, first sleep start date and first sleep start time so as to check if the series start time is valid or not.  
+  
+  
+### isValidSeriesEnd function:  
+This function is just a wrapper function that makes a call to the `isEndAfterStartSeries` by passing the parameters of last sleep end date, last sleep end time, series end date and series end time so as to check if the series end time is valid or not.  
+  
+  
+### timeInSeconds function:  
 
 
