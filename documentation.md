@@ -1,8 +1,10 @@
 # FIPS DATA ENTRY SYSTEM DOCUMENTATION  
 
 This documentation.md file is written to help the readers to understand the technical workings of the code files in this repository. In this document, you will learn about the importance of every file and their role in the project.  
-
-## index.html:  
+  
+-------------------------
+  
+## 1. index.html:  
 This html file contains the structure of the web page. It uses the latest HTML5 language standards and is structured to use Bootstrap in some places and Google Fonts for all the text content.  
 
 This html file links to the newstyles.css and the script.js files (details of the which are given in later sections).  
@@ -36,9 +38,9 @@ Once the sleep instance is added. as a common user would want the data to be in 
 ### Display of Data Section:  
 This section consists of the subheading, a div to populate toast messages and the Delete all entries button which as the name suggests deletes everything from the system upon asking confirmation from the user before doing so.   
   
-This section also contains the div with class "display" where the data is populated in the form of a HTML table with relevant column headings and data. The data format in which the data is extracted from the input fields does not match with the project requirements. So some data formatting happens before saving to the localStorage and display in the table.  
+This section also contains the div with class `display` where the data is populated in the form of a HTML table with relevant column headings and data. The data format in which the data is extracted from the input fields does not match with the project requirements. So some data formatting happens before saving to the localStorage and display in the table.  
   
-After the above subsection, another div that contains a button with label "Copy +24 hrs" is present. This button is added to the project to make it easy for the users to add a the same sleep start and end times just like their latest entry button for the next day.  
+After the above subsection, another div that contains a button with label `Copy +24 hrs` is present. This button is added to the project to make it easy for the users to add a the same sleep start and end times just like their latest entry button for the next day.  
   
 Along with the data, a delete button is added in each input row for deleting that specific entry from the table. 
   
@@ -46,18 +48,40 @@ Along with the data, a delete button is added in each input row for deleting tha
 ### Help Guide Modal Overlay Section:  
 This section is used to toggle on and off a modal with helpful instructions to help the user understand the role of each button on the webpage. Scrolling is turned off when the modal is displayed to avoid unnecessary confusion to the user when the modal is turned on accidentally and page is scrolled to do something else. Turning off the scroll helps avoid such confusion to the user. The button to toggle this modal on and off is placed right next to the main heading in a very subtle non-intrusive way using an info style icon. And to close the modal, the user has to use the cross button that is placed towards the top right corner.  
   
+-------------------------
   
-## newstyles.css:  
+## 2. newstyles.css:  
 This css file contains the code that is used to style the FIPS data entry system from ground up and is written using the CSS3 standard. The styles for each section are grouped together in the sequence they appear in the html file to make it easy for other teammates to find the relevant styles. Common styles like that of the buttons are grouped together where possible and are all placed in the location they were styled for the first time in the code. Global styles that normalize the appearance of the webpage on all browsers are written at the very beginning of the css file. 
   
 Best practices for writing the css code are followed unless they interfered the meaning or the development of other code. Mostly class selectors are used to make the styles reusable and the styles that should not be applied more than once are coded through the usage of ID selectors. Colors used are mostly written in the hexadecimal format unless opacity is tweaked in certain cases like that of the modal background overlay where the usage of RGBA format is unavoidable.  
   
-Some of the styles that need to be explained are ".hide-overlay" class selector which when added to any html element makes the element invisible by removing it from the document flow. This is used to turn on and off the modal overlay, hence the suitable name. Other css selector ".hide-scroll" is used to turn off the scroll by restricting the overflow css property to hidden. These two css selectors are used simulataneously to display the modal and turn off the scroll and viceversa. These classes are added to and removed from (toggled) the modal related divs using the javascript attached to the html file. Another css selector ".hide-firefox-alert" although does exactly the same work as the ".hide-overlay" but is written separately just for the purpose of ease of reading html code without having to refer to css file often.  
+Some of the styles that need to be explained are `.hide-overlay` class selector which when added to any html element makes the element invisible by removing it from the document flow. This is used to turn on and off the modal overlay, hence the suitable name. A different css selector `.hide-scroll` is used to turn off the scroll by restricting the overflow css property to hidden. These two css selectors are used simulataneously to display the modal and turn off the scroll and viceversa. These classes are added to and removed from (toggled) the modal related divs using the javascript attached to the html file. Another css selector `.hide-firefox-alert` although does exactly the same work as the `.hide-overlay` but is written separately just for the purpose of ease of reading html code without having to refer to css file often.  
   
 The styles that are written for the data table representation depend on their position in the html document. So if some reason, a table is added somewhere above the display table, then the css code needs to be adjusted accordingly. For this precise reason, the table element within the modal caused a minor bug with the styling of overlapped sleep data entries. Since the modal is anyways going to be positioned absolutely, the html div that contained the modal content and the modal table is simply placed at the end of the body element.  
 
 Tooltips were added to each and every button in the html code to give out a simple tip to the user about the buttons' function. These tooltips are not styled in anyway using the css. 
   
-At the end of all the section styles, all the media queries are placed to adjust the sizes and positions of fonts and html elements. All the media queries are pretty much self explanatory and only a handful of css properties are modified to make the page usable on ipads and devices of similar sizes. Since the use case for this FIPS data entry system is mostly on big screen devices like that of iPads, laptops and desktops, media queries are written to optimise the webpage appearance for those sizes only.  
+At the end of all the section styles, all the media queries are placed to adjust the sizes and positions of fonts and html elements. All the media queries are pretty much self explanatory and only a handful of css properties are modified to make the page usable on iPads and devices of similar sizes. Since the use case for this FIPS data entry system is mostly on big screen devices like that of iPads, laptops and desktops, media queries are written to optimise the webpage appearance for those sizes only.  
   
+  
+-------------------------
+  
+## 3. script.js:  
+This file contains all the javascript code that is used to add all the functionality in the data entry system. All the javascript is contained in this file and no script tags are used to add js code within the html file. And the same best practice was followed for the css styling and no inline or internal styling was used. This helped in keeping the content, presentation and functionality separate from each other.  
+  
+Global variables and constants that are used throughout the script are defined at the top of the script for quick modification of the configuration parameters.  
+  
+The array variable `data` stores all the sleep instances data in the form of subarrays. All the elements of the subarray are stored in the string format for ease of sorting them later on. The array variable `tempData` is used to temporarily store the data of one sleep instance while all the data validation checks are made and then once all checks are passed, `tempData` is pushed into the `data` and `tempData` will be reset to empty. Two constants are defined, one is `lowerThresholdSleepDuration` and `upperThresholdSleepDuration`. These are currently set to 1 hr and 12 hrs to determine if a sleep duration is abnormally short or abnormally long and subsequently warn the users of this scenario.  
+  
+### window.onload function:
+The window.onload function is used to do setup several things. First thing that is done when the window loads, the browser in which the webpage is loaded is checked if the browser is firefox. If the browser is Firefox, then a warning message is displayed just below the main heading to warn the users. 
+  
+Since the sleep data is stored in the localStorage, if some data exists in the localStorage then that data is extracted and the `data` array is filled with existing data upon page load. And once the array is filled with previous data, the data is displayed to the user so that they know what data they have saved previously. After the previously stored data is displayed, a function call to prepopulate the date fields is made. This function invocation is made after the data is filled in the `data` array because the last entry in the data array is used for prepopulating the date fields.  
+  
+  
+### displaySleepData function:
+
+
+
+
 
