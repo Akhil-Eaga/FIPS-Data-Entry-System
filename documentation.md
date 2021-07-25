@@ -136,5 +136,50 @@ This function is just a wrapper function that makes a call to the `isEndAfterSta
   
   
 ### timeInSeconds function:  
+This function is yet another helper function invoked by several functions to convert the passed date and time into seconds that lapsed since the 1st January 1970. This splits the full date passed in into day, month and year. This also splits the time into hours, minutes and seconds. All this data is used to create a new `Date` object that upon creation returns the number of milliseconds that have elapsed since 1st January 1970. Then those milliseconds are divided by 1000 and floored to get the time in seconds and is returned to the caller function.  
+  
+  
+### isAbnormalSleepDuration function:  
+This function takes in 4 parameters which are starting date and time, ending date and time. Then each date and time are converted into seconds and the duration of the sleep is calculated by subtracting the starting time in seconds from the ending time in seconds. Once the duration of the sleep is calculated it is compared against the `lowerThresholdSleepDuration` and the `upperThresholdSleepDuration` after converting them into seconds as well. If the sleep session duration is less than the lower limit, -1 is returned and if sleep duration is greater than the upper limit, 1 is returned. In all other cases 0 is returned. Depending on the return value, addEntry function displayed appropriate info messages. In essence, this function helps in identifying abnormal sleep durations.  
+  
+  
+### isOverlappingWithOther function:  
+This function checks if the passed in sleep session info (start date + time and end date + time) is overlapping with any other sleep sessions present in the localStorage. If there is no previously saved data then there is no point of checking for overlaps. Hence -1 is returned. Different scenarios are checked to ensure all types of overlaps are checked for. All the checks are made after converting each date and time into seconds for ease of checking. If the start time and end time both are less than some other instance start time, then there is no need to loop any further and check of overlaps. This helps in early stopping. Next check is if the passed in start date and time is in between the start and end of any other instance. And similarly the next check is if the end time of the passed in date and time is between any other instance's start and end time. Next check is if the passed in instance is encompassing any other instance totally. Here each instance start and end time is checked for being within the range of other input parameters' start and end time. If any check comes out as true, then there is an overlaps and the index of the overlapped entry is recorded. Then a call to `highlightOverlappedEntry` is made by passing in the index recorded to highlight the entry in the table as a visual indication to the user. Then the index with which the input parameter is overlapping is returned so that the caller function `addEntry` can alert the users with appropriate messages.  
+  
+  
+### prepopulateDateFields function:  
+This function is used to prepopulate date fields according to the data present in the localStorage. It first grabs the date and time fields from the webpage. If there is no previously saved data, then the sleep start date is prefilled with today's date and the sleep end date is prefilled with tomorrow's date. If some data is already present, then the last sleep end date is used to prefill the sleep start date field and the next day is calculated and prefilled in the sleep end date.  
+  
+  
+### highlightOverlappedEntry function:  
+This function accepts one parameter which basically represents the index of the sleep session in the `data` array that is overlapping with the input that was attempted to be added to the system. Since the indexing starts from 0, 1 is added to make it one based indexing and another 1 is added to the index to offset for the header row. And then the appropriate row is grabbed from the table and a class `.highlight-table-row` is added to highlight the row and another window.setTimeout is set to toggle back the `.highlight-table-row` after 5000 milliseconds (i.e., 5 seconds) to remove the highlight.  
+  
+  
+### copyTheLastEntryToNextDay function:  
+This function is invoked upon clicking the `Copy +24 hrs` button which basically adds another entry in the table with the same start and end time as the latest entry in the table but adds on day to the start and end dates essentially replicating the same sleep session for the next day. If there is no data present, the above mentioned process cannot be carried out, hence an error alert is shown to inform the user the same. This function basically calculates the next day by making a call to the `addOneDay` function by passing in the current date and getting back the next date. Once this new entry is calculated, the newly calculated date values and the previously grabbed time values for both the start and end of the sleep session are passed to the `addEntry` function. This is the other way of calling the `addEntry` function. Hence, the check for existence of some sensible value within the parameters is made in the addEntry function. And since this addition affects the values that are prefilled in the date fields, another call to `prepopulateDateFields` is made to update the prefilled values in the sleep start and end dates.  
+  
+  
+### addOneDay function:  
+This function accepts two parametes, i.e., date and time. Then the date and time are converted into time in seconds using the `timeInSeconds` function. Then time in milliseconds equivalent to 24hrs is added to the previously calculated time in seconds * 1000. And then a new Date object is created with this newly calculate value and then new individual date, month and year are extracted from the returned value. Those values are formatted into the YYYY-MM-DD format and returned to the caller function.  
+  
+  
+### toggleOverlay function:  
+This function is used to toggle the overlay to present the modal to the user. This function when called adds the class `.highlight-overlay` if not present already and removes if already present. At the same time, the same is done with `.hide-scroll` class that is toggled on and off for the body element to prevent scrolling when the overlay is on and allow the scroll when the overlay is off.  
+  
+  
+Many explanatory comments were already added in the script.js file but this documentation.md file is there to explain the role of each function within the overall scope and the underlying rationale and thought process that went behind coding up these functions.  
 
+------------------------
+  
+## 4. styles.css:  
+This css file contains the old styles that were used before the newstyles.css. This is just kept within the repo for record and is NOT currently being used in the FIPS Data Entry System.  
+  
+  
+
+-----------------------
+  
+
+Written by,  
+Akhil Eaga  
+Software Developer at FOWI  
 

@@ -450,7 +450,7 @@ function prepopulateDateFields() {
     // if there is no data in the local storage then if block will be executed otherwise else block will execute
     if (data.length == 0) {
         // this means the user is new or all the entries are deleted
-        // so there is last sleep end date to use for prepopulating date fields
+        // so there is no last sleep end date to use for prepopulating date fields
         // to enhance user experience the date values will be prepopulated to today and tomorrow
 
         // building the date for today in required format
